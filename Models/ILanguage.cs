@@ -8,6 +8,10 @@ namespace YarcheTextEditor.Models
 {
     public interface ILanguage
     {
+        /// <summary>
+        /// Code to fast access
+        /// </summary>
+        string LanguageCode { get; }
         string DragFile { get; }
         string English { get; }
         string Exit { get; }

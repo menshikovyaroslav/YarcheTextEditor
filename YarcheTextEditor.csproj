@@ -71,9 +71,12 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Classes\Log.cs" />
+    <Compile Include="Classes\RegistryMethods.cs" />
     <Compile Include="Controller\ProgramController.cs" />
     <Compile Include="Models\EnglishLanguage.cs" />
     <Compile Include="Models\ILanguage.cs" />
+    <Compile Include="Models\LanguageMethods.cs" />
     <Compile Include="Models\RussianLanguage.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

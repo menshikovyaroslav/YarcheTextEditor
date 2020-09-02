@@ -8,6 +8,8 @@ namespace YarcheTextEditor.Models
 {
     public class EnglishLanguage : ILanguage
     {
+        public string LanguageCode { get { return "en"; } }
+
         public string DragFile { get { return "Drag text file here"; } }
         public string English { get { return "English"; } }
         public string Exit { get { return "Exit"; } }

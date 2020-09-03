@@ -19,5 +19,6 @@ namespace YarcheTextEditor.Models
         string Open { get; }
         string Language { get; }
         string Russian { get; }
+        string OnlyOneFileSupported { get; }
     }
 }

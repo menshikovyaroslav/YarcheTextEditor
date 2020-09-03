@@ -8,23 +8,28 @@
         Title="YarcheTextEditor" WindowState="Maximized">
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
 
-
-        <Menu Style="{StaticResource MenuStyle}" VerticalAlignment="Top">
-            <MenuItem Header="{Binding _language.File}" Style="{StaticResource TopMenuItemStyle}">
-                <MenuItem Header="{Binding _language.Open}" Style="{StaticResource InsideMenuItemStyle}"></MenuItem>
-                <MenuItem Header="{Binding _language.Exit}" Style="{StaticResource InsideMenuItemStyle}"></MenuItem>
+        <Menu Grid.Row="0" Style="{StaticResource MenuStyle}" VerticalAlignment="Top">
+            <MenuItem Header="{Binding Language.File}" Style="{StaticResource TopMenuItemStyle}">
+                <MenuItem Header="{Binding Language.Open}" Style="{StaticResource InsideMenuItemStyle}" PreviewMouseLeftButtonUp="FileOpenMenuItemClick"></MenuItem>
+                <MenuItem Header="{Binding Language.Exit}" Style="{StaticResource InsideMenuItemStyle}"></MenuItem>
             </MenuItem>
-            <MenuItem Name="LanguageMenu" Header="{Binding _language.Language}" Style="{StaticResource TopMenuItemStyle}">
-                <MenuItem Name="RuLanguageMenu" Header="{Binding _language.Russian}" Style="{StaticResource InsideMenuItemStyle}" Icon="{StaticResource FlagRu}" PreviewMouseLeftButtonUp="SetRussianLanguage"></MenuItem>
-                <MenuItem Name="EngLanguageMenu" Header="{Binding _language.English}" Style="{StaticResource InsideMenuItemStyle}" Icon="{StaticResource FlagEng}" PreviewMouseLeftButtonUp="SetEnglishLanguage" IsChecked="True"></MenuItem>
+            <MenuItem Name="LanguageMenu" Header="{Binding Language.Language}" Style="{StaticResource TopMenuItemStyle}">
+                <MenuItem Name="RuLanguageMenu" Header="{Binding Language.Russian}" Style="{StaticResource InsideMenuItemStyle}" Icon="{StaticResource FlagRu}" PreviewMouseLeftButtonUp="SetRussianLanguage"></MenuItem>
+                <MenuItem Name="EngLanguageMenu" Header="{Binding Language.English}" Style="{StaticResource InsideMenuItemStyle}" Icon="{StaticResource FlagEng}" PreviewMouseLeftButtonUp="SetEnglishLanguage" IsChecked="True"></MenuItem>
             </MenuItem>
         </Menu>
+        <Grid Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="AliceBlue" DragDrop.Drop="DropFile" AllowDrop="True">
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                <Image Source="{StaticResource Download}" Width="400" Height="400" Opacity="0.4"></Image>
+                <TextBlock Text="{Binding Language.DragFile}" Style="{StaticResource DragFileLabelStyle}" PreviewMouseLeftButtonUp="FileOpenMenuItemClick"></TextBlock>
+            </StackPanel>
+        </Grid>
 
-        <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-            <Image Source="{StaticResource Download}" Width="400" Height="400" Opacity="0.4"></Image>
-            <TextBlock Text="{Binding _language.DragFile}" Style="{StaticResource DragFileLabelStyle}"></TextBlock>
-        </StackPanel>
         
 
         

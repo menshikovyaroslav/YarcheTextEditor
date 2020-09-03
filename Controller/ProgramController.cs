@@ -12,24 +12,24 @@ namespace YarcheTextEditor.Controller
 {
     public class ProgramController :INotifyPropertyChanged
     {
-        public ILanguage _language { get; set; }
+        public ILanguage Language { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public ProgramController()
         {
-            _language = GetLanguage();
+            Language = GetLanguage();
 
         }
         public void SetRussianLanguage()
         {
-            _language = new RussianLanguage();
+            Language = new RussianLanguage();
             UpdateLanguage();
         }
 
         public void SetEnglishLanguage()
         {
-            _language = new EnglishLanguage();
+            Language = new EnglishLanguage();
             UpdateLanguage();
         }
 
@@ -38,8 +38,8 @@ namespace YarcheTextEditor.Controller
         /// </summary>
         private void UpdateLanguage()
         {
-            OnPropertyChanged("_language");
-            RegistryMethods.SetLanguage(_language.LanguageCode);
+            OnPropertyChanged("Language");
+            RegistryMethods.SetLanguage(Language.LanguageCode);
         }
 
         /// <summary>

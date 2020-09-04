@@ -7,35 +7,26 @@ namespace YarcheTextEditor
 {
     public partial class MainWindow : Window
     {
-        public ProgramController _programController;
-        private ILanguage _language { get { return _programController.Language; } }
+        public ProgramController ProgramController;
+        private ILanguage _language { get { return ProgramController.Language; } }
         public MainWindow()
         {
-            _programController = new ProgramController();
-            DataContext = _programController;
+            ProgramController = new ProgramController();
 
             InitializeComponent();
+
+            DataContext = ProgramController;
         }
 
-        private void SetRussianLanguage(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        #region Change language
+
+        private void SetLanguage(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            _programController.SetRussianLanguage();
-            LanguageMenuCheckChanged(RuLanguageMenu);
+            var languageCode = ((MenuItem)sender).Tag.ToString();
+            ProgramController.SetLanguage(languageCode);
         }
 
-        private void SetEnglishLanguage(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            _programController.SetEnglishLanguage();
-            LanguageMenuCheckChanged(EngLanguageMenu);
-        }
-
-        private void LanguageMenuCheckChanged(MenuItem selectedMenuItem)
-        {
-            foreach (MenuItem menuItem in LanguageMenu.Items)
-            {
-                menuItem.IsChecked = menuItem == selectedMenuItem;
-            }
-        }
+        #endregion
 
         #region Load File
 
@@ -78,5 +69,10 @@ namespace YarcheTextEditor
         }
 
         #endregion
+
+        private void CloseProgram(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Close();
+        }
     }
 }

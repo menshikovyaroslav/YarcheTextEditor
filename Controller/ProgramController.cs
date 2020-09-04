@@ -10,7 +10,7 @@ using YarcheTextEditor.Models;
 
 namespace YarcheTextEditor.Controller
 {
-    public class ProgramController :INotifyPropertyChanged
+    public class ProgramController : INotifyPropertyChanged
     {
         public ILanguage Language { get; set; }
 
@@ -21,23 +21,10 @@ namespace YarcheTextEditor.Controller
             Language = GetLanguage();
 
         }
-        public void SetRussianLanguage()
+        public void SetLanguage(string languageCode)
         {
-            Language = new RussianLanguage();
-            UpdateLanguage();
-        }
+            Language = LanguageMethods.GetLanguage(languageCode);
 
-        public void SetEnglishLanguage()
-        {
-            Language = new EnglishLanguage();
-            UpdateLanguage();
-        }
-
-        /// <summary>
-        /// Fire language changed event for view and save chosen language in options
-        /// </summary>
-        private void UpdateLanguage()
-        {
             OnPropertyChanged("Language");
             RegistryMethods.SetLanguage(Language.LanguageCode);
         }

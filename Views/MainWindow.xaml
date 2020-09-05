@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:YarcheTextEditor"
         xmlns:controllers="clr-namespace:YarcheTextEditor.Controller"
+        xmlns:userControls="clr-namespace:YarcheTextEditor.UserControls"
         mc:Ignorable="d"
         Title="YarcheTextEditor" WindowState="Maximized">
 
@@ -28,14 +29,9 @@
                 <MenuItem Name="EngLanguageMenu" Header="{Binding Language.English}" Style="{StaticResource InsideMenuItemStyle}" Icon="{StaticResource FlagEng}" Tag="en" PreviewMouseLeftButtonUp="SetLanguage" IsChecked="True"></MenuItem>
             </MenuItem>
         </Menu>
-        <Grid Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="AliceBlue" DragDrop.Drop="DropFile" AllowDrop="True">
-            <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-                <Image Source="{StaticResource Download}" Width="400" Height="400" Opacity="0.4"></Image>
-                <TextBlock Text="{Binding Language.DragFile}" Style="{StaticResource DragFileLabelStyle}" PreviewMouseLeftButtonUp="FileOpenMenuItemClick"></TextBlock>
-            </StackPanel>
-        </Grid>
 
-        
+        <userControls:LoadFileControl x:Name="LoadFileControl" Grid.Row="1" Visibility="Visible"></userControls:LoadFileControl>
+        <userControls:WorkFileControl x:Name="WorkFileControl" Grid.Row="1" Visibility="Collapsed"></userControls:WorkFileControl>
 
         
     </Grid>

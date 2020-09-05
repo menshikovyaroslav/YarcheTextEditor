@@ -63,6 +63,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserControls\LoadFileControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\WorkFileControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -74,10 +82,19 @@
     <Compile Include="Classes\Log.cs" />
     <Compile Include="Classes\RegistryMethods.cs" />
     <Compile Include="Controller\ProgramController.cs" />
+    <Compile Include="Converters\OddConverter.cs" />
+    <Compile Include="Converters\TextListWidthConverter.cs" />
     <Compile Include="Models\EnglishLanguage.cs" />
     <Compile Include="Models\ILanguage.cs" />
     <Compile Include="Models\LanguageMethods.cs" />
     <Compile Include="Models\RussianLanguage.cs" />
+    <Compile Include="Models\StringElement.cs" />
+    <Compile Include="UserControls\LoadFileControl.xaml.cs">
+      <DependentUpon>LoadFileControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\WorkFileControl.xaml.cs">
+      <DependentUpon>WorkFileControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

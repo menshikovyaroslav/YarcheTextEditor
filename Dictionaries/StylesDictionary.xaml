@@ -6,7 +6,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="MenuItem">
-                    <StackPanel TextBlock.FontSize="15px" Height="40" MinWidth="120">
+                    <StackPanel x:Name="stackPanel" TextBlock.FontSize="15px" Height="40" MinWidth="120">
                         <!-- label, icons, etc. -->
                         <Label Content="{TemplateBinding Header}" Margin="5" Foreground="White" />
 
@@ -29,6 +29,11 @@
                             </Style>
                         </StackPanel.Style>
                     </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" TargetName="stackPanel" Value="0.3" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -38,21 +43,68 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="MenuItem">
-                    <DockPanel TextBlock.FontSize="15px" x:Name="panel" MinWidth="120">
-                        <!-- label, icons, etc. -->
-                        <Image Source="{Binding Icon, RelativeSource={RelativeSource TemplatedParent}}" Width="20" Margin="5,0" />
-                        <Label Content="{TemplateBinding Header}" Foreground="Black" Margin="0,5,5,5" />
+                    <Border x:Name="border" BorderThickness="1" BorderBrush="White" Margin="1">
+                        <DockPanel TextBlock.FontSize="15px" x:Name="panel" MinWidth="120">
+                            <!-- label, icons, etc. -->
+                            <Image Source="{Binding Icon, RelativeSource={RelativeSource TemplatedParent}}" Width="20" Margin="5,0" />
+                            <Label Content="{TemplateBinding Header}" x:Name="label" Foreground="Black" Margin="0,5,5,5" />
 
-                        <!-- sub items -->
-                        <Popup IsOpen="{TemplateBinding IsSubmenuOpen}" AllowsTransparency="True" Focusable="False" Placement="Right" >
-                            <Border BorderThickness="1" Background="White" BorderBrush="#E0E0E0">
-                                <StackPanel IsItemsHost="True" />
-                            </Border>
-                        </Popup>
-                    </DockPanel>
+                            <!-- sub items -->
+                            <Popup IsOpen="{TemplateBinding IsSubmenuOpen}" AllowsTransparency="True" Focusable="False" Placement="Right" >
+                                <Border BorderThickness="1" Background="White" BorderBrush="#E0E0E0">
+                                    <StackPanel IsItemsHost="True" />
+                                </Border>
+                            </Popup>
+                        </DockPanel>
+                    </Border>
+                    
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsHighlighted" Value="True">
                             <Setter Property="Background" TargetName="panel" Value="#EFF6FC" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="BorderBrush" TargetName="border" Value="Black" />
+                            <Setter Property="FontWeight" TargetName="label" Value="Bold" />
+                            <Setter Property="Opacity" TargetName="border" Value="0.3" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ToolMenuItemStyle" TargetType="{x:Type MenuItem}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="MenuItem">
+                    <Grid Margin="1" x:Name="grid">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition Width="100"></ColumnDefinition>
+                            <ColumnDefinition Width="60"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <DockPanel Grid.Column="0" TextBlock.FontSize="15px" x:Name="panel" MinWidth="120">
+                            <!-- label, icons, etc. -->
+                            <Image Source="{Binding Icon, RelativeSource={RelativeSource TemplatedParent}}" Width="20" Margin="5,0" />
+                            <Label Content="{TemplateBinding Header}" x:Name="label" Foreground="Black" Margin="0,5,5,5" />
+
+                            <!-- sub items -->
+                            <Popup IsOpen="{TemplateBinding IsSubmenuOpen}" AllowsTransparency="True" Focusable="False" Placement="Right" >
+                                <Border BorderThickness="1" Background="White" BorderBrush="#E0E0E0">
+                                    <StackPanel IsItemsHost="True" />
+                                </Border>
+                            </Popup>
+                        </DockPanel>
+                        <TextBox x:Name="textbox" Grid.Column="1" VerticalContentAlignment="Center" Margin="4" />
+                        <Button x:Name="button" Grid.Column="2" Margin="4" Content="Go" Command="{TemplateBinding Tag}" CommandParameter="{Binding ElementName=textbox, Path=Text}" />
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsHighlighted" Value="True">
+                            <Setter Property="Background" TargetName="panel" Value="#EFF6FC" />
+                        </Trigger>
+                        <Trigger Property="Text" SourceName="textbox" Value="">
+                            <Setter Property="IsEnabled" TargetName="button" Value="False" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -61,7 +113,6 @@
     </Style>
 
     <Style x:Key="MenuStyle" TargetType="{x:Type Menu}">
-
         <Setter Property="MenuItem.Foreground" Value="White"></Setter>
         <Setter Property="MenuItem.Padding" Value="0"></Setter>
         <Setter Property="MenuItem.Margin" Value="0"></Setter>

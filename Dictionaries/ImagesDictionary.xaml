@@ -3,7 +3,10 @@
                     xmlns:local="clr-namespace:YarcheTextEditor.Dictionaries">
 
     <ImageSource x:Key="Download">/Images/download.png</ImageSource>
+    <ImageSource x:Key="Exit">/Images/exit.png</ImageSource>
+    <ImageSource x:Key="Open">/Images/open.png</ImageSource>
     <ImageSource x:Key="SignMore">/Images/more.png</ImageSource>
+    <ImageSource x:Key="Tool">/Images/tool.png</ImageSource>
 
     <ImageSource x:Key="FlagRu">/Images/Countries/ru.png</ImageSource>
     <ImageSource x:Key="FlagEng">/Images/Countries/eng.png</ImageSource>

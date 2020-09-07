@@ -18,5 +18,8 @@ namespace YarcheTextEditor.Models
         public string OnlyOneFileSupported { get { return "Only one file is supported, drag and drop one file"; } }
         public string Open { get { return "Open"; } }
         public string Russian { get { return "Русский"; } }
+        public string Tools { get { return "Tools"; } }
+        public string RemoveStringWithWordTool { get { return "Remove strings with certain word"; } }
+        public string RemoveStringWithOutWordTool { get { return "Remove strings without certain word"; } }
     }
 }

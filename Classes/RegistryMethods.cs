@@ -10,13 +10,13 @@ namespace YarcheTextEditor.Classes
         /// Save chosen language for next start
         /// </summary>
         /// <param name="language">chosen language</param>
-        public static void SetLanguage(string language)
+        public static void SetLanguage(ILanguage language)
         {
             try
             {
                 var hkcu = Registry.CurrentUser;
                 RegistryKey settingsBranch = hkcu.OpenSubKey("Software\\YarcheTextEditor", true);
-                settingsBranch.SetValue("Language", language, RegistryValueKind.String);
+                settingsBranch.SetValue("Language", language.LanguageCode, RegistryValueKind.String);
 
                 settingsBranch?.Close();
                 hkcu?.Close();

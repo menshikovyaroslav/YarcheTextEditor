@@ -19,6 +19,11 @@ namespace YarcheTextEditor.Models
         string Open { get; }
         string Language { get; }
         string Russian { get; }
+        string Tools { get; }
         string OnlyOneFileSupported { get; }
+
+
+        string RemoveStringWithWordTool { get; }
+        string RemoveStringWithOutWordTool { get; }
     }
 }

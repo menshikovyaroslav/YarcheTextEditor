@@ -9,7 +9,7 @@ using System.Windows.Data;
 
 namespace YarcheTextEditor.Converters
 {
-    [ValueConversion(typeof(int), typeof(string))]
+    [ValueConversion(typeof(bool), typeof(string))]
     public class OddConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

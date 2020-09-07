@@ -11,8 +11,6 @@ namespace YarcheTextEditor
         public ILanguage CurrentLanguage { get { return ProgramController.Language; } }
         public MainWindow()
         {
-       //     ProgramController = new ProgramController();
-
             InitializeComponent();
 
             LoadFileControl.MainWindow = this;
@@ -20,12 +18,6 @@ namespace YarcheTextEditor
             ProgramController.MainWindow = this;
             DataContext = ProgramController;
 
-        }
-
-        private void SetLanguage(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            var languageCode = ((MenuItem)sender).Tag.ToString();
-            ProgramController.SetLanguage(languageCode);
         }
 
         private void FileOpenMenuItemClick(object sender, System.Windows.Input.MouseButtonEventArgs e)

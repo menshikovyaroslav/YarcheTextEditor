@@ -21,12 +21,16 @@
 
         <Menu Grid.Row="0" Style="{StaticResource MenuStyle}" VerticalAlignment="Top">
             <MenuItem Header="{Binding Language.File}" Style="{StaticResource TopMenuItemStyle}">
-                <MenuItem Header="{Binding Language.Open}" Style="{StaticResource InsideMenuItemStyle}" PreviewMouseLeftButtonUp="FileOpenMenuItemClick"></MenuItem>
-                <MenuItem Header="{Binding Language.Exit}" Style="{StaticResource InsideMenuItemStyle}" PreviewMouseLeftButtonUp="CloseProgram"></MenuItem>
+                <MenuItem Header="{Binding Language.Open}" Style="{StaticResource InsideMenuItemStyle}" Icon="{StaticResource Open}" PreviewMouseLeftButtonUp="FileOpenMenuItemClick"></MenuItem>
+                <MenuItem Header="{Binding Language.Exit}" Style="{StaticResource InsideMenuItemStyle}" Icon="{StaticResource Exit}" Command="{Binding CloseProgramCommand}"></MenuItem>
             </MenuItem>
             <MenuItem Name="LanguageMenu" Header="{Binding Language.Language}" Style="{StaticResource TopMenuItemStyle}">
-                <MenuItem Name="RuLanguageMenu" Header="{Binding Language.Russian}" Style="{StaticResource InsideMenuItemStyle}" Icon="{StaticResource FlagRu}" Tag="ru" PreviewMouseLeftButtonUp="SetLanguage"></MenuItem>
-                <MenuItem Name="EngLanguageMenu" Header="{Binding Language.English}" Style="{StaticResource InsideMenuItemStyle}" Icon="{StaticResource FlagEng}" Tag="en" PreviewMouseLeftButtonUp="SetLanguage" IsChecked="True"></MenuItem>
+                <MenuItem Name="RuLanguageMenu" Header="{Binding Language.Russian}" Style="{StaticResource InsideMenuItemStyle}" Icon="{StaticResource FlagRu}" Command="{Binding SetRussianCommand}"></MenuItem>
+                <MenuItem Name="EngLanguageMenu" Header="{Binding Language.English}" Style="{StaticResource InsideMenuItemStyle}" Icon="{StaticResource FlagEng}" Command="{Binding SetEnglishCommand}"></MenuItem>
+            </MenuItem>
+            <MenuItem Name="ToolMenu" Header="{Binding Language.Tools}" Style="{StaticResource TopMenuItemStyle}" IsEnabled="{Binding IsFileLoaded}">
+                <MenuItem Header="{Binding Language.RemoveStringWithWordTool}" Style="{StaticResource ToolMenuItemStyle}" Icon="{StaticResource Tool}" Tag="{Binding RemoveStringWithWordCommand}"></MenuItem>
+                <MenuItem Header="{Binding Language.RemoveStringWithOutWordTool}" Style="{StaticResource ToolMenuItemStyle}" Icon="{StaticResource Tool}" Tag="{Binding RemoveStringWithOutWordCommand}"></MenuItem>
             </MenuItem>
         </Menu>
 

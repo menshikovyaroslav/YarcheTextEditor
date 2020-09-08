@@ -21,25 +21,19 @@ namespace YarcheTextEditor.Controller
 
         #region Command Init
 
-        private ICommand _setRussianCommand;
-        private ICommand _setEnglishCommand;
-
-        public ICommand SetRussianCommand
-        {
-            get { return _setRussianCommand; }
-            set { _setRussianCommand = value; }
-        }
-
-        public ICommand SetEnglishCommand
-        {
-            get { return _setEnglishCommand; }
-            set { _setEnglishCommand = value; }
-        }
-
+        public ICommand SetRussianCommand { get; set; }
+        public ICommand SetEnglishCommand { get; set; }
         public ICommand CloseProgramCommand { get; set; }
-
         public ICommand RemoveStringWithWordCommand { get; set; }
         public ICommand RemoveStringWithOutWordCommand { get; set; }
+        public ICommand StatisticsOnOccurrencesCommand { get; set; }
+        public ICommand FileOpenCommand { get; set; }
+        public ICommand FileCloseCommand { get; set; }
+        public ICommand FileSaveCommand { get; set; }
+        public ICommand FileSaveAsCommand { get; set; }
+        public ICommand EncodingMenuCommand { get; set; }
+        public ICommand SetEncodingWin1251Command { get; set; }
+        public ICommand SetEncodingUtf8Command { get; set; }
 
         #endregion
 
@@ -51,6 +45,8 @@ namespace YarcheTextEditor.Controller
 
             OnPropertyChanged("Language");
             RegistryMethods.SetLanguage(Language);
+
+            AddMessageToUser($"Language changed to '{Language.LanguageCode}'");
         }
 
         public bool SetRussianCommand_CanExecute()
@@ -65,6 +61,8 @@ namespace YarcheTextEditor.Controller
 
             OnPropertyChanged("Language");
             RegistryMethods.SetLanguage(Language);
+
+            AddMessageToUser($"Language changed to '{Language.LanguageCode}'");
         }
 
         public bool SetEnglishCommand_CanExecute()
@@ -133,6 +131,128 @@ namespace YarcheTextEditor.Controller
             return IsFileLoaded;
         }
 
+        public void StatisticsOnOccurrencesCommand_Execute()
+        {
+            var newCollection = new ObservableCollection<StringElement>();
+
+            // line -> number of occurrences 
+            var dict = new SortedList<string, int>();
+            foreach (var stringElement in TextCollection)
+            {
+                if (dict.ContainsKey(stringElement.Text)) dict[stringElement.Text]++;
+                else dict[stringElement.Text] = 1;
+            }
+
+            var index = 0;
+            foreach (KeyValuePair<string, int> pair in dict.OrderByDescending(pair => pair.Value))
+            {
+                index++;
+                newCollection.Add(new StringElement() { Index = index, Text = $"{pair.Key}={pair.Value}" });
+            }
+
+            TextCollection.Clear();
+            TextCollection = newCollection;
+            OnPropertyChanged("TextCollection");
+        }
+
+        public bool StatisticsOnOccurrencesCommand_CanExecute()
+        {
+            return IsFileLoaded;
+        }
+
+        public void EncodingMenuCommand_Execute()
+        {
+        }
+
+        public bool EncodingMenuCommand_CanExecute()
+        {
+            return IsFileLoaded;
+        }
+
+        public void FileOpenCommand_Execute()
+        {
+            ChooseFile();
+        }
+
+        public bool FileOpenCommand_CanExecute()
+        {
+            return true;
+        }
+
+        public void FileSaveCommand_Execute()
+        {
+            var lines = new List<string>();
+            foreach (var item in TextCollection)
+            {
+                lines.Add(item.Text);
+            }
+            File.WriteAllLines(_pathToLoadedFile, lines, _fileEncoding);
+
+            AddMessageToUser($"Saved '{_pathToLoadedFile}' file");
+        }
+
+        public bool FileSaveCommand_CanExecute()
+        {
+            return IsFileLoaded;
+        }
+
+        public void SetEncodingWin1251Command_Execute()
+        {
+            _fileEncoding = Encoding.GetEncoding("Windows-1251");
+            AddMessageToUser($"Set '{_fileEncoding.BodyName}' encoding");
+            LoadFile(_pathToLoadedFile);
+        }
+
+        public bool SetEncodingWin1251Command_CanExecute()
+        {
+            if (IsFileLoaded && _fileEncoding != Encoding.GetEncoding("Windows-1251")) return true;
+            return false;
+        }
+
+        public void SetEncodingUtf8Command_Execute()
+        {
+            _fileEncoding = Encoding.UTF8;
+            AddMessageToUser($"Set '{_fileEncoding.BodyName}' encoding");
+            LoadFile(_pathToLoadedFile);
+        }
+
+        public bool SetEncodingUtf8Command_CanExecute()
+        {
+            if (IsFileLoaded && _fileEncoding != Encoding.UTF8) return true;
+            return false;
+        }
+
+        // SetEncodingWin1251Command
+
+        public void FileSaveAsCommand_Execute()
+        {
+
+        }
+
+        public bool FileSaveAsCommand_CanExecute()
+        {
+            return IsFileLoaded;
+        }
+
+        public void FileCloseCommand_Execute()
+        {
+            TextCollection.Clear();
+
+            MainWindow.LoadFileControl.Visibility = System.Windows.Visibility.Visible;
+            MainWindow.WorkFileControl.Visibility = System.Windows.Visibility.Collapsed;
+
+            IsFileLoaded = false;
+            OnPropertyChanged("TextCollection");
+            OnPropertyChanged("IsFileLoaded");
+
+            AddMessageToUser($"Closed '{_pathToLoadedFile}' file");
+        }
+
+        public bool FileCloseCommand_CanExecute()
+        {
+            return IsFileLoaded;
+        }
+
         #endregion
 
         #endregion
@@ -144,6 +264,8 @@ namespace YarcheTextEditor.Controller
         public event PropertyChangedEventHandler PropertyChanged;
 
         public bool IsFileLoaded { get; set; }
+        private string _pathToLoadedFile { get; set; }
+        private Encoding _fileEncoding { get; set; }
 
         public ProgramController()
         {
@@ -155,6 +277,16 @@ namespace YarcheTextEditor.Controller
             CloseProgramCommand = new DelegateCommand(CloseProgramCommand_Execute, CloseProgramCommand_CanExecute);
             RemoveStringWithWordCommand = new DelegateWithParameterCommand<string>(RemoveStringWithWordCommand_Execute, RemoveStringWithWordCommand_CanExecute);
             RemoveStringWithOutWordCommand = new DelegateWithParameterCommand<string>(RemoveStringWithOutWordCommand_Execute, RemoveStringWithOutWordCommand_CanExecute);
+            StatisticsOnOccurrencesCommand = new DelegateCommand(StatisticsOnOccurrencesCommand_Execute, StatisticsOnOccurrencesCommand_CanExecute);
+            FileOpenCommand = new DelegateCommand(FileOpenCommand_Execute, FileOpenCommand_CanExecute);
+            FileCloseCommand = new DelegateCommand(FileCloseCommand_Execute, FileCloseCommand_CanExecute);
+            FileSaveCommand = new DelegateCommand(FileSaveCommand_Execute, FileSaveCommand_CanExecute);
+            FileSaveAsCommand = new DelegateCommand(FileSaveAsCommand_Execute, FileSaveAsCommand_CanExecute);
+            EncodingMenuCommand = new DelegateCommand(EncodingMenuCommand_Execute, EncodingMenuCommand_CanExecute);
+            SetEncodingWin1251Command = new DelegateCommand(SetEncodingWin1251Command_Execute, SetEncodingWin1251Command_CanExecute);
+            SetEncodingUtf8Command = new DelegateCommand(SetEncodingUtf8Command_Execute, SetEncodingUtf8Command_CanExecute);
+
+            _fileEncoding = Encoding.UTF8;
         }
 
         /// <summary>
@@ -170,20 +302,36 @@ namespace YarcheTextEditor.Controller
         {
             TextCollection.Clear();
 
-            MainWindow.LoadFileControl.Visibility = System.Windows.Visibility.Collapsed;
-            MainWindow.WorkFileControl.Visibility = System.Windows.Visibility.Visible;
-
-            var lines = File.ReadAllLines(path);
-            var index = 0;
-            foreach (var line in lines)
+            try
             {
-                index++;
-                TextCollection.Add(new StringElement() { Index = index, Text = line});
-            }
+                var lines = File.ReadAllLines(path, _fileEncoding);
+                var index = 0;
+                foreach (var line in lines)
+                {
+                    index++;
+                    TextCollection.Add(new StringElement() { Index = index, Text = line });
+                }
 
-            IsFileLoaded = true;
-            OnPropertyChanged("TextCollection");
-            OnPropertyChanged("IsFileLoaded");
+                _pathToLoadedFile = path;
+
+                MainWindow.LoadFileControl.Visibility = Visibility.Collapsed;
+                MainWindow.WorkFileControl.Visibility = Visibility.Visible;
+
+                IsFileLoaded = true;
+                OnPropertyChanged("TextCollection");
+                OnPropertyChanged("IsFileLoaded");
+
+                AddMessageToUser($"Opened '{path}' file");
+            }
+            catch (Exception ex)
+            {
+                AddMessageToUser(ex.Message);
+            }
+        }
+
+        private void AddMessageToUser(string message)
+        {
+            MainWindow.AddMessage(message);
         }
 
         public void ChooseFile()

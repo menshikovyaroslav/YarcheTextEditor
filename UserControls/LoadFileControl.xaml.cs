@@ -49,15 +49,5 @@ namespace YarcheTextEditor.UserControls
 
             _programController.LoadFile(files[0]);
         }
-
-        private void FileOpenClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            _programController.ChooseFile();
-        }
-
-        private void UserControl_Initialized(object sender, EventArgs e)
-        {
-            
-        }
     }
 }

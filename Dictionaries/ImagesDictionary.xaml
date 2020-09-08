@@ -2,10 +2,14 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:YarcheTextEditor.Dictionaries">
 
+    <ImageSource x:Key="Close">/Images/close.png</ImageSource>
     <ImageSource x:Key="Download">/Images/download.png</ImageSource>
+    <ImageSource x:Key="Encoding">/Images/encoding.png</ImageSource>
     <ImageSource x:Key="Exit">/Images/exit.png</ImageSource>
     <ImageSource x:Key="Open">/Images/open.png</ImageSource>
+    <ImageSource x:Key="Save">/Images/save.png</ImageSource>
     <ImageSource x:Key="SignMore">/Images/more.png</ImageSource>
+    <ImageSource x:Key="Stat">/Images/stat.png</ImageSource>
     <ImageSource x:Key="Tool">/Images/tool.png</ImageSource>
 
     <ImageSource x:Key="FlagRu">/Images/Countries/ru.png</ImageSource>

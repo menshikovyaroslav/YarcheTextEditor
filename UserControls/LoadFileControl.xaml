@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:YarcheTextEditor.UserControls"
-             xmlns:controllers="clr-namespace:YarcheTextEditor.Controller" Loaded="UserControl_Loaded" Initialized="UserControl_Initialized"
+             xmlns:controllers="clr-namespace:YarcheTextEditor.Controller" Loaded="UserControl_Loaded"
              mc:Ignorable="d">
 
     <UserControl.DataContext>
@@ -12,9 +12,12 @@
     </UserControl.DataContext>
 
     <Grid Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="AliceBlue" DragDrop.Drop="DropFile" AllowDrop="True">
+        <Grid.InputBindings>
+            <MouseBinding Command="{Binding FileOpenCommand}" MouseAction="LeftClick" />
+        </Grid.InputBindings>
         <StackPanel Orientation="Vertical" VerticalAlignment="Center">
             <Image Source="{StaticResource Download}" Width="400" Height="400" Opacity="0.4"></Image>
-            <TextBlock Text="{Binding Language.DragFile}" Style="{StaticResource DragFileLabelStyle}" PreviewMouseLeftButtonUp="FileOpenClick"></TextBlock>
+            <TextBlock Text="{Binding Language.DragFile}" Style="{StaticResource DragFileLabelStyle}"></TextBlock>
         </StackPanel>
     </Grid>
 </UserControl>

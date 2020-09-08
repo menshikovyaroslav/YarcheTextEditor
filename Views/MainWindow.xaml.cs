@@ -17,17 +17,11 @@ namespace YarcheTextEditor
             WorkFileControl.MainWindow = this;
             ProgramController.MainWindow = this;
             DataContext = ProgramController;
-
         }
 
-        private void FileOpenMenuItemClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        public void AddMessage(string message)
         {
-            ProgramController.ChooseFile();
-        }
-
-        private void CloseProgram(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            Close();
+            WindowInformer.Items.Insert(0, message);
         }
     }
 }

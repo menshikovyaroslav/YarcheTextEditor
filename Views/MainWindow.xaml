@@ -17,11 +17,21 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="80"></RowDefinition>
         </Grid.RowDefinitions>
 
         <Menu Grid.Row="0" Style="{StaticResource MenuStyle}" VerticalAlignment="Top">
             <MenuItem Header="{Binding Language.File}" Style="{StaticResource TopMenuItemStyle}">
-                <MenuItem Header="{Binding Language.Open}" Style="{StaticResource InsideMenuItemStyle}" Icon="{StaticResource Open}" PreviewMouseLeftButtonUp="FileOpenMenuItemClick"></MenuItem>
+                <MenuItem Header="{Binding Language.Open}" Style="{StaticResource InsideMenuItemStyle}" Icon="{StaticResource Open}" Command="{Binding FileOpenCommand}"></MenuItem>
+                <MenuItem Header="{Binding Language.Close}" Style="{StaticResource InsideMenuItemStyle}" Icon="{StaticResource Close}" Command="{Binding FileCloseCommand}"></MenuItem>
+                <MenuItem Header="{Binding Language.Save}" Style="{StaticResource InsideMenuItemStyle}" Icon="{StaticResource Save}" Command="{Binding FileSaveCommand}"></MenuItem>
+                <MenuItem Header="{Binding Language.SaveAs}" Style="{StaticResource InsideMenuItemStyle}" Icon="{StaticResource Save}" Command="{Binding FileSaveAsCommand}"></MenuItem>
+                <Separator />
+                <MenuItem Header="{Binding Language.Encoding}" Style="{StaticResource InsideSubMenuItemStyle}" Icon="{StaticResource Encoding}" Command="{Binding EncodingMenuCommand}">
+                    <MenuItem Header="Windows-1251" Style="{StaticResource InsideMenuItemStyle}" Icon="{StaticResource Encoding}" Command="{Binding SetEncodingWin1251Command}"></MenuItem>
+                    <MenuItem Header="Utf-8" Style="{StaticResource InsideMenuItemStyle}" Icon="{StaticResource Encoding}" Command="{Binding SetEncodingUtf8Command}"></MenuItem>
+                </MenuItem>
+                <Separator />
                 <MenuItem Header="{Binding Language.Exit}" Style="{StaticResource InsideMenuItemStyle}" Icon="{StaticResource Exit}" Command="{Binding CloseProgramCommand}"></MenuItem>
             </MenuItem>
             <MenuItem Name="LanguageMenu" Header="{Binding Language.Language}" Style="{StaticResource TopMenuItemStyle}">
@@ -31,12 +41,18 @@
             <MenuItem Name="ToolMenu" Header="{Binding Language.Tools}" Style="{StaticResource TopMenuItemStyle}" IsEnabled="{Binding IsFileLoaded}">
                 <MenuItem Header="{Binding Language.RemoveStringWithWordTool}" Style="{StaticResource ToolMenuItemStyle}" Icon="{StaticResource Tool}" Tag="{Binding RemoveStringWithWordCommand}"></MenuItem>
                 <MenuItem Header="{Binding Language.RemoveStringWithOutWordTool}" Style="{StaticResource ToolMenuItemStyle}" Icon="{StaticResource Tool}" Tag="{Binding RemoveStringWithOutWordCommand}"></MenuItem>
+                <Separator />
+                <MenuItem Header="{Binding Language.StatisticsOnOccurrences}" Style="{StaticResource StatMenuItemStyle}" Icon="{StaticResource Stat}" Tag="{Binding StatisticsOnOccurrencesCommand}"></MenuItem>
             </MenuItem>
         </Menu>
 
         <userControls:LoadFileControl x:Name="LoadFileControl" Grid.Row="1" Visibility="Visible"></userControls:LoadFileControl>
         <userControls:WorkFileControl x:Name="WorkFileControl" Grid.Row="1" Visibility="Collapsed"></userControls:WorkFileControl>
 
-        
+        <StatusBar Grid.Row="2">
+            <StatusBarItem HorizontalContentAlignment="Stretch">
+                <ListBox Style="{StaticResource WindowInformerStyle}" Name="WindowInformer" />
+            </StatusBarItem>
+        </StatusBar>
     </Grid>
 </Window>

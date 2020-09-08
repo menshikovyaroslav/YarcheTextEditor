@@ -28,8 +28,8 @@
                             <ColumnDefinition Width="*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Grid.Column="0" Margin="5" FontSize="14" FontFamily="Arial" Text="{Binding Index}" HorizontalAlignment="Left" TextWrapping="Wrap" />
-                        <TextBlock Grid.Column="1" Margin="5" FontSize="14" FontFamily="Arial" Text="{Binding Text}" TextWrapping="WrapWithOverflow" />
+                        <TextBlock Grid.Column="0" Style="{StaticResource WorkFileTextBlockStyle}" Text="{Binding Index}" />
+                        <TextBlock Grid.Column="1" Style="{StaticResource WorkFileTextBlockStyle}" Text="{Binding Text}" />
 
                     </Grid>
                 </DataTemplate>

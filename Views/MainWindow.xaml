@@ -30,6 +30,7 @@
                 <MenuItem Header="{Binding Language.Encoding}" Style="{StaticResource InsideSubMenuItemStyle}" Icon="{StaticResource Encoding}" Command="{Binding EncodingMenuCommand}">
                     <MenuItem Header="Windows-1251" Style="{StaticResource InsideMenuItemStyle}" Icon="{StaticResource Encoding}" Command="{Binding SetEncodingWin1251Command}"></MenuItem>
                     <MenuItem Header="Utf-8" Style="{StaticResource InsideMenuItemStyle}" Icon="{StaticResource Encoding}" Command="{Binding SetEncodingUtf8Command}"></MenuItem>
+                    <MenuItem Header="{Binding Language.YourEncoding}" Style="{StaticResource ToolMenuItemStyle}" Icon="{StaticResource Encoding}" Tag="{Binding SetYourEncodingCommand}"></MenuItem>
                 </MenuItem>
                 <Separator />
                 <MenuItem Header="{Binding Language.Exit}" Style="{StaticResource InsideMenuItemStyle}" Icon="{StaticResource Exit}" Command="{Binding CloseProgramCommand}"></MenuItem>
@@ -43,6 +44,7 @@
                 <MenuItem Header="{Binding Language.RemoveStringWithOutWordTool}" Style="{StaticResource ToolMenuItemStyle}" Icon="{StaticResource Tool}" Tag="{Binding RemoveStringWithOutWordCommand}"></MenuItem>
                 <Separator />
                 <MenuItem Header="{Binding Language.StatisticsOnOccurrences}" Style="{StaticResource StatMenuItemStyle}" Icon="{StaticResource Stat}" Tag="{Binding StatisticsOnOccurrencesCommand}"></MenuItem>
+                <MenuItem Header="{Binding Language.StatisticsOnOccurrencesWithWord}" Style="{StaticResource ToolMenuItemStyle}" Icon="{StaticResource Stat}" Tag="{Binding StatisticsOnOccurrencesWithWordCommand}"></MenuItem>
             </MenuItem>
         </Menu>
 

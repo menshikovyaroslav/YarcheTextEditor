@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -27,6 +28,7 @@ namespace YarcheTextEditor.Controller
         public ICommand RemoveStringWithWordCommand { get; set; }
         public ICommand RemoveStringWithOutWordCommand { get; set; }
         public ICommand StatisticsOnOccurrencesCommand { get; set; }
+        public ICommand StatisticsOnOccurrencesWithWordCommand { get; set; }
         public ICommand FileOpenCommand { get; set; }
         public ICommand FileCloseCommand { get; set; }
         public ICommand FileSaveCommand { get; set; }
@@ -34,6 +36,7 @@ namespace YarcheTextEditor.Controller
         public ICommand EncodingMenuCommand { get; set; }
         public ICommand SetEncodingWin1251Command { get; set; }
         public ICommand SetEncodingUtf8Command { get; set; }
+        public ICommand SetYourEncodingCommand { get; set; }
 
         #endregion
 
@@ -160,6 +163,28 @@ namespace YarcheTextEditor.Controller
             return IsFileLoaded;
         }
 
+        public void StatisticsOnOccurrencesWithWordCommand_Execute(string word)
+        {
+            var newCollection = new ObservableCollection<StringElement>();
+
+            var count = 0;
+            foreach (var stringElement in TextCollection)
+            {
+                if (stringElement.Text.Contains(word)) count++;
+            }
+
+            newCollection.Add(new StringElement() { Index = 1, Text = $"{word}={count}" });
+
+            TextCollection.Clear();
+            TextCollection = newCollection;
+            OnPropertyChanged("TextCollection");
+        }
+
+        public bool StatisticsOnOccurrencesWithWordCommand_CanExecute(string word)
+        {
+            return IsFileLoaded;
+        }
+
         public void EncodingMenuCommand_Execute()
         {
         }
@@ -222,11 +247,57 @@ namespace YarcheTextEditor.Controller
             return false;
         }
 
+        public void SetYourEncodingCommand_Execute(string encoding)
+        {
+            try
+            {
+                _fileEncoding = Encoding.GetEncoding(encoding);
+                AddMessageToUser($"Set '{_fileEncoding.BodyName}' encoding");
+                LoadFile(_pathToLoadedFile);
+            }
+            catch (Exception ex)
+            {
+                AddMessageToUser($"Failed to set '{encoding}' encoding: {ex.Message}");
+            }
+        }
+
+        public bool SetYourEncodingCommand_CanExecute(string parameter)
+        {
+            return IsFileLoaded;
+        }
+
         // SetEncodingWin1251Command
 
         public void FileSaveAsCommand_Execute()
         {
+            var chosenFile = string.Empty;
+            try
+            {
+                var extension = Path.GetExtension(_pathToLoadedFile);
 
+                var saveDialog = new SaveFileDialog();
+                saveDialog.AddExtension = true;
+                saveDialog.Filter = $"{Language.Current} ({extension})|*{extension}|{Language.AllFiles}";
+                if (saveDialog.ShowDialog() == true)
+                {
+                    chosenFile = saveDialog.FileName;
+
+                    var lines = new List<string>();
+                    foreach (var item in TextCollection)
+                    {
+                        lines.Add(item.Text);
+                    }
+
+                    File.WriteAllLines(chosenFile, lines, _fileEncoding);
+
+                    AddMessageToUser($"Saved as '{chosenFile}' file");
+                }
+            }
+            catch (Exception ex)
+            {
+                AddMessageToUser($"Not saved as '{chosenFile}' file: {ex.Message}");
+            }
+            
         }
 
         public bool FileSaveAsCommand_CanExecute()
@@ -285,6 +356,8 @@ namespace YarcheTextEditor.Controller
             EncodingMenuCommand = new DelegateCommand(EncodingMenuCommand_Execute, EncodingMenuCommand_CanExecute);
             SetEncodingWin1251Command = new DelegateCommand(SetEncodingWin1251Command_Execute, SetEncodingWin1251Command_CanExecute);
             SetEncodingUtf8Command = new DelegateCommand(SetEncodingUtf8Command_Execute, SetEncodingUtf8Command_CanExecute);
+            SetYourEncodingCommand = new DelegateWithParameterCommand<string>(SetYourEncodingCommand_Execute, SetYourEncodingCommand_CanExecute);
+            StatisticsOnOccurrencesWithWordCommand = new DelegateWithParameterCommand<string>(StatisticsOnOccurrencesWithWordCommand_Execute, StatisticsOnOccurrencesWithWordCommand_CanExecute);
 
             _fileEncoding = Encoding.UTF8;
         }

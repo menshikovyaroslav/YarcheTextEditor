@@ -11,7 +11,9 @@ namespace YarcheTextEditor.Models
         /// <summary>
         /// Code to fast access
         /// </summary>
+        string AllFiles { get; }
         string Close { get; }
+        string Current { get; }
         string LanguageCode { get; }
         string DragFile { get; }
         string Encoding { get; }
@@ -25,10 +27,11 @@ namespace YarcheTextEditor.Models
         string SaveAs { get; }
         string Tools { get; }
         string OnlyOneFileSupported { get; }
-
+        string YourEncoding { get; }
 
         string RemoveStringWithWordTool { get; }
         string RemoveStringWithOutWordTool { get; }
         string StatisticsOnOccurrences { get; }
+        string StatisticsOnOccurrencesWithWord { get; }
     }
 }

@@ -39,6 +39,7 @@ namespace YarcheTextEditor.Controller
         public ICommand SetYourEncodingCommand { get; set; }
         public ICommand NavigationBackCommand { get; set; }
         public ICommand NavigationForwardCommand { get; set; }
+        public ICommand DeleteEmptyLinesCommand { get; set; }
 
         #endregion
 
@@ -192,6 +193,28 @@ namespace YarcheTextEditor.Controller
         }
 
         public bool EncodingMenuCommand_CanExecute()
+        {
+            return IsFileLoaded;
+        }
+
+        public void DeleteEmptyLinesCommand_Execute()
+        {
+            var newCollection = new ObservableCollection<StringElement>();
+
+            var index = 0;
+            foreach (var item in TextCollection)
+            {
+                if (item.Text == "") continue;
+
+                index++;
+                newCollection.Add(new StringElement() { Index = index, Text = item.Text});
+            }
+
+            AddMessageToUser($"Used {Language.DeleteEmptyLines}");
+            ChangeTextCollection(newCollection);
+        }
+
+        public bool DeleteEmptyLinesCommand_CanExecute()
         {
             return IsFileLoaded;
         }
@@ -422,6 +445,7 @@ namespace YarcheTextEditor.Controller
             StatisticsOnOccurrencesWithWordCommand = new DelegateWithParameterCommand<string>(StatisticsOnOccurrencesWithWordCommand_Execute, StatisticsOnOccurrencesWithWordCommand_CanExecute);
             NavigationBackCommand = new DelegateCommand(NavigationBackCommand_Execute, NavigationBackCommand_CanExecute);
             NavigationForwardCommand = new DelegateCommand(NavigationForwardCommand_Execute, NavigationForwardCommand_CanExecute);
+            DeleteEmptyLinesCommand = new DelegateCommand(DeleteEmptyLinesCommand_Execute, DeleteEmptyLinesCommand_CanExecute);
 
             _fileEncoding = Encoding.UTF8;
         }

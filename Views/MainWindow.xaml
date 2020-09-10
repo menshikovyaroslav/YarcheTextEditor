@@ -42,6 +42,7 @@
             <MenuItem Name="ToolMenu" Header="{Binding Language.Tools}" Style="{StaticResource TopMenuItemStyle}" IsEnabled="{Binding IsFileLoaded}">
                 <MenuItem Header="{Binding Language.RemoveStringWithWordTool}" Style="{StaticResource ToolMenuItemStyle}" Icon="{StaticResource Tool}" Tag="{Binding RemoveStringWithWordCommand}"></MenuItem>
                 <MenuItem Header="{Binding Language.RemoveStringWithOutWordTool}" Style="{StaticResource ToolMenuItemStyle}" Icon="{StaticResource Tool}" Tag="{Binding RemoveStringWithOutWordCommand}"></MenuItem>
+                <MenuItem Header="{Binding Language.DeleteEmptyLines}" Style="{StaticResource StatMenuItemStyle}" Icon="{StaticResource Tool}" Tag="{Binding DeleteEmptyLinesCommand}"></MenuItem>
                 <Separator />
                 <MenuItem Header="{Binding Language.StatisticsOnOccurrences}" Style="{StaticResource StatMenuItemStyle}" Icon="{StaticResource Stat}" Tag="{Binding StatisticsOnOccurrencesCommand}"></MenuItem>
                 <MenuItem Header="{Binding Language.StatisticsOnOccurrencesWithWord}" Style="{StaticResource ToolMenuItemStyle}" Icon="{StaticResource Stat}" Tag="{Binding StatisticsOnOccurrencesWithWordCommand}"></MenuItem>

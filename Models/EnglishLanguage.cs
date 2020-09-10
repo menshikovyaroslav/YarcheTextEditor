@@ -12,6 +12,7 @@ namespace YarcheTextEditor.Models
         public string LanguageCode { get { return "en"; } }
         public string Close { get { return "Close"; } }
         public string Current { get { return "Current"; } }
+        public string DeleteEmptyLines { get { return "Delete empty lines"; } }
         public string DragFile { get { return "Drag text file here or press"; } }
         public string Encoding { get { return "Encoding"; } }
         public string English { get { return "English"; } }

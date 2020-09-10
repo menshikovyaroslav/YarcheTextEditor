@@ -15,6 +15,7 @@ namespace YarcheTextEditor.Models
         string Close { get; }
         string Current { get; }
         string LanguageCode { get; }
+        string DeleteEmptyLines { get; }
         string DragFile { get; }
         string Encoding { get; }
         string English { get; }

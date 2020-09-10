@@ -46,6 +46,8 @@
                 <MenuItem Header="{Binding Language.StatisticsOnOccurrences}" Style="{StaticResource StatMenuItemStyle}" Icon="{StaticResource Stat}" Tag="{Binding StatisticsOnOccurrencesCommand}"></MenuItem>
                 <MenuItem Header="{Binding Language.StatisticsOnOccurrencesWithWord}" Style="{StaticResource ToolMenuItemStyle}" Icon="{StaticResource Stat}" Tag="{Binding StatisticsOnOccurrencesWithWordCommand}"></MenuItem>
             </MenuItem>
+            <MenuItem Header="Back" Style="{StaticResource NavigationMenuItemStyle}" Icon="{StaticResource Back}" Command="{Binding NavigationBackCommand}" Margin="10,1,0,1"></MenuItem>
+            <MenuItem Header="Forward" Style="{StaticResource NavigationMenuItemStyle}" Icon="{StaticResource Forward}" Command="{Binding NavigationForwardCommand}" Margin="0,1,0,1"></MenuItem>
         </Menu>
 
         <userControls:LoadFileControl x:Name="LoadFileControl" Grid.Row="1" Visibility="Visible"></userControls:LoadFileControl>

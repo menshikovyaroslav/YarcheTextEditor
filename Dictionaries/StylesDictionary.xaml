@@ -138,6 +138,32 @@
         </Setter>
     </Style>
 
+    <Style x:Key="NavigationMenuItemStyle" TargetType="{x:Type MenuItem}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="MenuItem">
+                    <Border BorderBrush="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}" BorderThickness="1" x:Name="border">
+                        <Grid Margin="1" x:Name="grid">
+                            <DockPanel Grid.Column="0" TextBlock.FontSize="15px" x:Name="panel" Width="40">
+                                <Image Source="{Binding Icon, RelativeSource={RelativeSource TemplatedParent}}" />
+                            </DockPanel>
+                        </Grid>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsHighlighted" Value="True">
+                            <Setter Property="Background" TargetName="panel" Value="#EFF6FC" />
+                            <Setter Property="BorderBrush" TargetName="border" Value="Black" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" TargetName="panel" Value="0.3" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style x:Key="StatMenuItemStyle" TargetType="{x:Type MenuItem}">
         <Setter Property="Template">
             <Setter.Value>

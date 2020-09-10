@@ -37,6 +37,8 @@ namespace YarcheTextEditor.Controller
         public ICommand SetEncodingWin1251Command { get; set; }
         public ICommand SetEncodingUtf8Command { get; set; }
         public ICommand SetYourEncodingCommand { get; set; }
+        public ICommand NavigationBackCommand { get; set; }
+        public ICommand NavigationForwardCommand { get; set; }
 
         #endregion
 
@@ -44,6 +46,8 @@ namespace YarcheTextEditor.Controller
 
         public void SetRussianCommand_Execute()
         {
+            _canBack = _canForward = false;
+
             Language = new RussianLanguage();
 
             OnPropertyChanged("Language");
@@ -60,6 +64,8 @@ namespace YarcheTextEditor.Controller
 
         public void SetEnglishCommand_Execute()
         {
+            _canBack = _canForward = false;
+
             Language = new EnglishLanguage();
 
             OnPropertyChanged("Language");
@@ -99,9 +105,8 @@ namespace YarcheTextEditor.Controller
                 }
             }
 
-            TextCollection.Clear();
-            TextCollection = newCollection;
-            OnPropertyChanged("TextCollection");
+            AddMessageToUser($"Used {Language.RemoveStringWithWordTool}, word='{word}'");
+            ChangeTextCollection(newCollection);
         }
 
         public bool RemoveStringWithWordCommand_CanExecute(string parameter)
@@ -124,9 +129,8 @@ namespace YarcheTextEditor.Controller
                 }
             }
 
-            TextCollection.Clear();
-            TextCollection = newCollection;
-            OnPropertyChanged("TextCollection");
+            AddMessageToUser($"Used {Language.RemoveStringWithOutWordTool}, word='{word}'");
+            ChangeTextCollection(newCollection);
         }
 
         public bool RemoveStringWithOutWordCommand_CanExecute(string parameter)
@@ -153,9 +157,8 @@ namespace YarcheTextEditor.Controller
                 newCollection.Add(new StringElement() { Index = index, Text = $"{pair.Key}={pair.Value}" });
             }
 
-            TextCollection.Clear();
-            TextCollection = newCollection;
-            OnPropertyChanged("TextCollection");
+            AddMessageToUser($"Used {Language.StatisticsOnOccurrences}");
+            ChangeTextCollection(newCollection);
         }
 
         public bool StatisticsOnOccurrencesCommand_CanExecute()
@@ -175,9 +178,8 @@ namespace YarcheTextEditor.Controller
 
             newCollection.Add(new StringElement() { Index = 1, Text = $"{word}={count}" });
 
-            TextCollection.Clear();
-            TextCollection = newCollection;
-            OnPropertyChanged("TextCollection");
+            AddMessageToUser($"Used {Language.StatisticsOnOccurrencesWithWord}, word='{word}'");
+            ChangeTextCollection(newCollection);
         }
 
         public bool StatisticsOnOccurrencesWithWordCommand_CanExecute(string word)
@@ -221,8 +223,58 @@ namespace YarcheTextEditor.Controller
             return IsFileLoaded;
         }
 
+        public void NavigationBackCommand_Execute()
+        {
+            AddMessageToUser($"Navigation back");
+            _canBack = false;
+            _canForward = true;
+            ForwardCollection.Clear();
+            foreach (var item in TextCollection)
+            {
+                ForwardCollection.Add(item);
+            }
+            TextCollection.Clear();
+            foreach (var item in BackCollection)
+            {
+                TextCollection.Add(item);
+            }
+            BackCollection.Clear();
+            OnPropertyChanged("TextCollection");
+        }
+
+        public bool NavigationBackCommand_CanExecute()
+        {
+            return IsFileLoaded && _canBack;
+        }
+
+        public void NavigationForwardCommand_Execute()
+        {
+            AddMessageToUser($"Navigation forward");
+            _canBack = true;
+            _canForward = false;
+            BackCollection.Clear();
+            foreach (var item in TextCollection)
+            {
+                BackCollection.Add(item);
+            }
+            TextCollection.Clear();
+            foreach (var item in ForwardCollection)
+            {
+                TextCollection.Add(item);
+            }
+            ForwardCollection.Clear();
+            OnPropertyChanged("TextCollection");
+        }
+
+        public bool NavigationForwardCommand_CanExecute()
+        {
+            return IsFileLoaded && _canForward;
+        }
+
         public void SetEncodingWin1251Command_Execute()
         {
+            _canBack = _canForward = false;
+
             _fileEncoding = Encoding.GetEncoding("Windows-1251");
             AddMessageToUser($"Set '{_fileEncoding.BodyName}' encoding");
             LoadFile(_pathToLoadedFile);
@@ -236,6 +288,8 @@ namespace YarcheTextEditor.Controller
 
         public void SetEncodingUtf8Command_Execute()
         {
+            _canBack = _canForward = false;
+
             _fileEncoding = Encoding.UTF8;
             AddMessageToUser($"Set '{_fileEncoding.BodyName}' encoding");
             LoadFile(_pathToLoadedFile);
@@ -251,6 +305,8 @@ namespace YarcheTextEditor.Controller
         {
             try
             {
+                _canBack = _canForward = false;
+
                 _fileEncoding = Encoding.GetEncoding(encoding);
                 AddMessageToUser($"Set '{_fileEncoding.BodyName}' encoding");
                 LoadFile(_pathToLoadedFile);
@@ -331,17 +387,23 @@ namespace YarcheTextEditor.Controller
         public MainWindow MainWindow { get; set; }
         public ILanguage Language { get; set; }
         public ObservableCollection<StringElement> TextCollection { get; set; }
+        public ObservableCollection<StringElement> BackCollection { get; set; }
+        public ObservableCollection<StringElement> ForwardCollection { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public bool IsFileLoaded { get; set; }
         private string _pathToLoadedFile { get; set; }
         private Encoding _fileEncoding { get; set; }
+        private bool _canBack;
+        private bool _canForward;
 
         public ProgramController()
         {
             Language = GetLanguage();
             TextCollection = new ObservableCollection<StringElement>();
+            BackCollection = new ObservableCollection<StringElement>();
+            ForwardCollection = new ObservableCollection<StringElement>();
 
             SetRussianCommand = new DelegateCommand(SetRussianCommand_Execute, SetRussianCommand_CanExecute);
             SetEnglishCommand = new DelegateCommand(SetEnglishCommand_Execute, SetEnglishCommand_CanExecute);
@@ -358,6 +420,8 @@ namespace YarcheTextEditor.Controller
             SetEncodingUtf8Command = new DelegateCommand(SetEncodingUtf8Command_Execute, SetEncodingUtf8Command_CanExecute);
             SetYourEncodingCommand = new DelegateWithParameterCommand<string>(SetYourEncodingCommand_Execute, SetYourEncodingCommand_CanExecute);
             StatisticsOnOccurrencesWithWordCommand = new DelegateWithParameterCommand<string>(StatisticsOnOccurrencesWithWordCommand_Execute, StatisticsOnOccurrencesWithWordCommand_CanExecute);
+            NavigationBackCommand = new DelegateCommand(NavigationBackCommand_Execute, NavigationBackCommand_CanExecute);
+            NavigationForwardCommand = new DelegateCommand(NavigationForwardCommand_Execute, NavigationForwardCommand_CanExecute);
 
             _fileEncoding = Encoding.UTF8;
         }
@@ -373,6 +437,7 @@ namespace YarcheTextEditor.Controller
 
         public void LoadFile(string path)
         {
+            _canBack = _canForward = false;
             TextCollection.Clear();
 
             try
@@ -419,6 +484,20 @@ namespace YarcheTextEditor.Controller
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void ChangeTextCollection(ObservableCollection<StringElement> newCollection)
+        {
+            _canBack = true;
+            _canForward = false;
+            BackCollection.Clear();
+            foreach (var item in TextCollection)
+            {
+                BackCollection.Add(item);
+            }
+            TextCollection.Clear();
+            TextCollection = newCollection;
+            OnPropertyChanged("TextCollection");
         }
     }
 }

@@ -28,6 +28,8 @@ namespace YarcheTextEditor.Models
         public string YourEncoding { get { return "Своя кодировка"; } }
         public string RemoveStringWithWordTool { get { return "Удалить строки с определенным словом"; } }
         public string RemoveStringWithOutWordTool { get { return "Удалить строки без определенного слова"; } }
+        public string RemoveWordTool { get { return "Удалить строку"; } }
+        public string ReplaceWordTool { get { return "Заменить строку другой строкой"; } }
         public string StatisticsOnOccurrences { get { return "Статистика по вхождениям"; } }
         public string StatisticsOnOccurrencesWithWord { get { return "Как много строк содержат слово"; } }
     }

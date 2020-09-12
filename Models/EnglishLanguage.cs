@@ -28,6 +28,8 @@ namespace YarcheTextEditor.Models
         public string YourEncoding { get { return "Your Encoding"; } }
         public string RemoveStringWithWordTool { get { return "Remove strings with certain word"; } }
         public string RemoveStringWithOutWordTool { get { return "Remove strings without certain word"; } }
+        public string RemoveWordTool { get { return "Remove string"; } }
+        public string ReplaceWordTool { get { return "Replace string by another string"; } }
         public string StatisticsOnOccurrences { get { return "Statistics on occurrences"; } }
         public string StatisticsOnOccurrencesWithWord { get { return "How many lines contain certain word"; } }
     }

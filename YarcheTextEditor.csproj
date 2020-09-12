@@ -85,6 +85,7 @@
     <Compile Include="Commands\DelegateCommand.cs" />
     <Compile Include="Controller\ProgramController.cs" />
     <Compile Include="Converters\OddConverter.cs" />
+    <Compile Include="Converters\MultiCommandParameterConverter.cs" />
     <Compile Include="Converters\TextListWidthConverter.cs" />
     <Compile Include="Models\EnglishLanguage.cs" />
     <Compile Include="Models\ILanguage.cs" />

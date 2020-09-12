@@ -32,6 +32,8 @@ namespace YarcheTextEditor.Models
 
         string RemoveStringWithWordTool { get; }
         string RemoveStringWithOutWordTool { get; }
+        string RemoveWordTool { get; }
+        string ReplaceWordTool { get; }
         string StatisticsOnOccurrences { get; }
         string StatisticsOnOccurrencesWithWord { get; }
     }

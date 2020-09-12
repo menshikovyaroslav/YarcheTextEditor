@@ -40,6 +40,8 @@ namespace YarcheTextEditor.Controller
         public ICommand NavigationBackCommand { get; set; }
         public ICommand NavigationForwardCommand { get; set; }
         public ICommand DeleteEmptyLinesCommand { get; set; }
+        public ICommand RemoveWordCommand { get; set; }
+        public ICommand ReplaceWordCommand { get; set; }
 
         #endregion
 
@@ -113,6 +115,66 @@ namespace YarcheTextEditor.Controller
         public bool RemoveStringWithWordCommand_CanExecute(string parameter)
         {
             return IsFileLoaded;
+        }
+
+        public void RemoveWordCommand_Execute(string word)
+        {
+            var newCollection = new ObservableCollection<StringElement>();
+            var index = 0;
+            foreach (var stringElement in TextCollection)
+            {
+                index++;
+                var line = stringElement.Text;
+                var isContains = line.Contains(word);
+                if (isContains)
+                {
+                    line = line.Replace(word, "");
+                }
+                newCollection.Add(new StringElement() { Index = index, Text = line });
+            }
+
+            AddMessageToUser($"Used {Language.RemoveWordTool}, word='{word}'");
+            ChangeTextCollection(newCollection);
+        }
+
+        public bool RemoveWordCommand_CanExecute(string parameter)
+        {
+            return IsFileLoaded;
+        }
+
+        public void ReplaceWordCommand_Execute(object[] parameters)
+        {
+            try
+            {
+                var word1 = parameters[0] as string;
+                var word2 = parameters[1] as string;
+
+                var newCollection = new ObservableCollection<StringElement>();
+                var index = 0;
+                foreach (var stringElement in TextCollection)
+                {
+                    index++;
+                    var line = stringElement.Text;
+                    var isContains = line.Contains(word1);
+                    if (isContains)
+                    {
+                        line = line.Replace(word1, word2);
+                    }
+                    newCollection.Add(new StringElement() { Index = index, Text = line });
+                }
+
+                AddMessageToUser($"Used {Language.ReplaceWordTool}, word='{word1} to word='{word2}'");
+                ChangeTextCollection(newCollection);
+            }
+            catch (Exception)
+            {
+            }
+           
+        }
+
+        public bool ReplaceWordCommand_CanExecute(object[] parameters)
+        {
+            return true;
         }
 
         public void RemoveStringWithOutWordCommand_Execute(string word)
@@ -446,6 +508,9 @@ namespace YarcheTextEditor.Controller
             NavigationBackCommand = new DelegateCommand(NavigationBackCommand_Execute, NavigationBackCommand_CanExecute);
             NavigationForwardCommand = new DelegateCommand(NavigationForwardCommand_Execute, NavigationForwardCommand_CanExecute);
             DeleteEmptyLinesCommand = new DelegateCommand(DeleteEmptyLinesCommand_Execute, DeleteEmptyLinesCommand_CanExecute);
+            RemoveWordCommand = new DelegateWithParameterCommand<string>(RemoveWordCommand_Execute, RemoveWordCommand_CanExecute);
+            ReplaceWordCommand = new DelegateWithParameterCommand<object[]>(ReplaceWordCommand_Execute, ReplaceWordCommand_CanExecute);
+            // ReplaceWordCommand
 
             _fileEncoding = Encoding.UTF8;
         }

@@ -1,5 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:converters="clr-namespace:YarcheTextEditor.Converters">
 
     <Style x:Key="TopMenuItemStyle" TargetType="{x:Type MenuItem}">
         <Setter Property="Template">
@@ -130,6 +131,56 @@
                             <Setter Property="Background" TargetName="panel" Value="#EFF6FC" />
                         </Trigger>
                         <Trigger Property="Text" SourceName="textbox" Value="">
+                            <Setter Property="IsEnabled" TargetName="button" Value="False" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="Tool2MenuItemStyle" TargetType="{x:Type MenuItem}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="MenuItem">
+                    <Grid Margin="1" x:Name="grid">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition Width="100"></ColumnDefinition>
+                            <ColumnDefinition Width="100"></ColumnDefinition>
+                            <ColumnDefinition Width="60"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <DockPanel Grid.Column="0" TextBlock.FontSize="15px" x:Name="panel" MinWidth="120">
+                            <!-- label, icons, etc. -->
+                            <Image Source="{Binding Icon, RelativeSource={RelativeSource TemplatedParent}}" Width="20" Margin="5,0" />
+                            <Label Content="{TemplateBinding Header}" x:Name="label" Foreground="Black" Margin="0,5,5,5" />
+                            <!-- sub items -->
+                            <Popup IsOpen="{TemplateBinding IsSubmenuOpen}" AllowsTransparency="True" Focusable="False" Placement="Right" >
+                                <Border BorderThickness="1" Background="White" BorderBrush="#E0E0E0">
+                                    <StackPanel IsItemsHost="True" />
+                                </Border>
+                            </Popup>
+                        </DockPanel>
+                        <TextBox x:Name="textbox1" Grid.Column="1" VerticalContentAlignment="Center" Margin="4" />
+                        <TextBox x:Name="textbox2" Grid.Column="2" VerticalContentAlignment="Center" Margin="4" />
+                        <Button x:Name="button" Grid.Column="3" Margin="4" Content="Go" Command="{TemplateBinding Tag}">
+                            <Button.Resources>
+                                <converters:MultiCommandParameterConverter x:Key="multiCommandParameterConverter" />
+                            </Button.Resources>
+                            <Button.CommandParameter>
+                                <MultiBinding Converter="{StaticResource multiCommandParameterConverter}">
+                                    <Binding ElementName="textbox1" Path="Text" />
+                                    <Binding ElementName="textbox2" Path="Text" />
+                                </MultiBinding>
+                            </Button.CommandParameter>
+                        </Button>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsHighlighted" Value="True">
+                            <Setter Property="Background" TargetName="panel" Value="#EFF6FC" />
+                        </Trigger>
+                        <Trigger Property="Text" SourceName="textbox1" Value="">
                             <Setter Property="IsEnabled" TargetName="button" Value="False" />
                         </Trigger>
                     </ControlTemplate.Triggers>

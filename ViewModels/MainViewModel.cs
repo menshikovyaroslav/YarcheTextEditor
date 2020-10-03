@@ -5,18 +5,18 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using YarcheTextEditor.Classes;
 using YarcheTextEditor.Commands;
 using YarcheTextEditor.Models;
 
-namespace YarcheTextEditor.Controller
+namespace YarcheTextEditor.ViewModels
 {
-    public class ProgramController : INotifyPropertyChanged
+    public class MainViewModel : INotifyPropertyChanged
     {
         #region Commands
 
@@ -51,7 +51,7 @@ namespace YarcheTextEditor.Controller
         {
             _canBack = _canForward = false;
 
-            Language = new RussianLanguage();
+            Options.Language = new RussianLanguage();
 
             OnPropertyChanged("Language");
             RegistryMethods.SetLanguage(Language);
@@ -69,7 +69,7 @@ namespace YarcheTextEditor.Controller
         {
             _canBack = _canForward = false;
 
-            Language = new EnglishLanguage();
+            Options.Language = new EnglishLanguage();
 
             OnPropertyChanged("Language");
             RegistryMethods.SetLanguage(Language);
@@ -169,7 +169,7 @@ namespace YarcheTextEditor.Controller
             catch (Exception)
             {
             }
-           
+
         }
 
         public bool ReplaceWordCommand_CanExecute(object[] parameters)
@@ -269,7 +269,7 @@ namespace YarcheTextEditor.Controller
                 if (item.Text == "") continue;
 
                 index++;
-                newCollection.Add(new StringElement() { Index = index, Text = item.Text});
+                newCollection.Add(new StringElement() { Index = index, Text = item.Text });
             }
 
             AddMessageToUser($"Used {Language.DeleteEmptyLines}");
@@ -438,7 +438,7 @@ namespace YarcheTextEditor.Controller
             {
                 AddMessageToUser($"Not saved as '{chosenFile}' file: {ex.Message}");
             }
-            
+
         }
 
         public bool FileSaveAsCommand_CanExecute()
@@ -450,8 +450,8 @@ namespace YarcheTextEditor.Controller
         {
             TextCollection.Clear();
 
-            MainWindow.LoadFileControl.Visibility = System.Windows.Visibility.Visible;
-            MainWindow.WorkFileControl.Visibility = System.Windows.Visibility.Collapsed;
+            //   MainWindow.LoadFileControl.Visibility = System.Windows.Visibility.Visible;
+            //   MainWindow.WorkFileControl.Visibility = System.Windows.Visibility.Collapsed;
 
             IsFileLoaded = false;
             OnPropertyChanged("TextCollection");
@@ -469,11 +469,11 @@ namespace YarcheTextEditor.Controller
 
         #endregion
 
-        public MainWindow MainWindow { get; set; }
-        public ILanguage Language { get; set; }
+        public ILanguage Language { get { return Options.Language; } }
         public ObservableCollection<StringElement> TextCollection { get; set; }
         public ObservableCollection<StringElement> BackCollection { get; set; }
         public ObservableCollection<StringElement> ForwardCollection { get; set; }
+        public ObservableCollection<string> EventsCollection { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -483,12 +483,25 @@ namespace YarcheTextEditor.Controller
         private bool _canBack;
         private bool _canForward;
 
-        public ProgramController()
+
+        private Page _loadFilePage;
+        private Page _workFilePage;
+
+
+
+        public Page CurrentPage { get; set; }
+
+
+        public MainViewModel()
         {
-            Language = GetLanguage();
             TextCollection = new ObservableCollection<StringElement>();
             BackCollection = new ObservableCollection<StringElement>();
             ForwardCollection = new ObservableCollection<StringElement>();
+            EventsCollection = new ObservableCollection<string>();
+
+            _loadFilePage = new Pages.LoadFilePage();
+            _workFilePage = new Pages.WorkFilePage();
+            CurrentPage = _loadFilePage;
 
             SetRussianCommand = new DelegateCommand(SetRussianCommand_Execute, SetRussianCommand_CanExecute);
             SetEnglishCommand = new DelegateCommand(SetEnglishCommand_Execute, SetEnglishCommand_CanExecute);
@@ -515,15 +528,6 @@ namespace YarcheTextEditor.Controller
             _fileEncoding = Encoding.UTF8;
         }
 
-        /// <summary>
-        /// Get saved in options language or default language
-        /// </summary>
-        /// <returns></returns>
-        public ILanguage GetLanguage()
-        {
-            return RegistryMethods.GetLanguage();
-        }
-
         public void LoadFile(string path)
         {
             _canBack = _canForward = false;
@@ -541,8 +545,8 @@ namespace YarcheTextEditor.Controller
 
                 _pathToLoadedFile = path;
 
-                MainWindow.LoadFileControl.Visibility = Visibility.Collapsed;
-                MainWindow.WorkFileControl.Visibility = Visibility.Visible;
+                //MainWindow.LoadFileControl.Visibility = Visibility.Collapsed;
+                //MainWindow.WorkFileControl.Visibility = Visibility.Visible;
 
                 IsFileLoaded = true;
                 OnPropertyChanged("TextCollection");
@@ -558,7 +562,8 @@ namespace YarcheTextEditor.Controller
 
         private void AddMessageToUser(string message)
         {
-            MainWindow.AddMessage(message);
+            EventsCollection.Add(message);
+            OnPropertyChanged("EventsCollection");
         }
 
         public void ChooseFile()

@@ -4,13 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:YarcheTextEditor"
-        xmlns:controllers="clr-namespace:YarcheTextEditor.Controller"
-        xmlns:userControls="clr-namespace:YarcheTextEditor.UserControls"
+        xmlns:vm="clr-namespace:YarcheTextEditor.ViewModels"
         mc:Ignorable="d"
         Title="YarcheTextEditor" WindowState="Maximized">
 
     <Window.DataContext>
-        <controllers:ProgramController />
+        <vm:MainViewModel />
     </Window.DataContext>
     
     <Grid>
@@ -53,12 +52,11 @@
             <MenuItem Header="Forward" Style="{StaticResource NavigationMenuItemStyle}" Icon="{StaticResource Forward}" Command="{Binding NavigationForwardCommand}" Margin="0,1,0,1"></MenuItem>
         </Menu>
 
-        <userControls:LoadFileControl x:Name="LoadFileControl" Grid.Row="1" Visibility="Visible"></userControls:LoadFileControl>
-        <userControls:WorkFileControl x:Name="WorkFileControl" Grid.Row="1" Visibility="Collapsed"></userControls:WorkFileControl>
+        <Frame Grid.Row="1" Content="{Binding CurrentPage}" />
 
         <StatusBar Grid.Row="2">
             <StatusBarItem HorizontalContentAlignment="Stretch">
-                <ListBox Style="{StaticResource WindowInformerStyle}" Name="WindowInformer" />
+                <ListBox Style="{StaticResource WindowInformerStyle}" Name="WindowInformer" ItemsSource="{Binding EventsCollection}" />
             </StatusBarItem>
         </StatusBar>
     </Grid>

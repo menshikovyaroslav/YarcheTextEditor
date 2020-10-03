@@ -63,11 +63,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\LoadFileControl.xaml">
+    <Page Include="Pages\LoadFilePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\WorkFileControl.xaml">
+    <Page Include="Pages\WorkFilePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -80,10 +80,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Classes\Log.cs" />
+    <Compile Include="Classes\Options.cs" />
     <Compile Include="Classes\RegistryMethods.cs" />
     <Compile Include="Commands\DelegateWithParameterCommand.cs" />
     <Compile Include="Commands\DelegateCommand.cs" />
-    <Compile Include="Controller\ProgramController.cs" />
     <Compile Include="Converters\OddConverter.cs" />
     <Compile Include="Converters\MultiCommandParameterConverter.cs" />
     <Compile Include="Converters\TextListWidthConverter.cs" />
@@ -92,12 +92,15 @@
     <Compile Include="Models\LanguageMethods.cs" />
     <Compile Include="Models\RussianLanguage.cs" />
     <Compile Include="Models\StringElement.cs" />
-    <Compile Include="UserControls\LoadFileControl.xaml.cs">
-      <DependentUpon>LoadFileControl.xaml</DependentUpon>
+    <Compile Include="Pages\LoadFilePage.xaml.cs">
+      <DependentUpon>LoadFilePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\WorkFileControl.xaml.cs">
-      <DependentUpon>WorkFileControl.xaml</DependentUpon>
+    <Compile Include="Pages\WorkFilePage.xaml.cs">
+      <DependentUpon>WorkFilePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\WorkFileViewModel.cs" />
+    <Compile Include="ViewModels\LoadFileViewModel.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -165,6 +168,7 @@
     <Resource Include="Images\back.png" />
     <Resource Include="Images\forward.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

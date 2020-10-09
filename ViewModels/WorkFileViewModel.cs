@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace YarcheTextEditor.ViewModels
 {
-    public class WorkFileViewModel : INotifyPropertyChanged
+    public class WorkFileViewModel : BaseViewModel
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+
     }
 }

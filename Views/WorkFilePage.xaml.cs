@@ -13,12 +13,12 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace YarcheTextEditor.Pages
+namespace YarcheTextEditor.Views
 {
     /// <summary>
     /// Логика взаимодействия для WorkFilePage.xaml
     /// </summary>
-    public partial class WorkFilePage : Page
+    public partial class WorkFilePage
     {
         public WorkFilePage()
         {

@@ -9,10 +9,24 @@ using YarcheTextEditor.Models;
 
 namespace YarcheTextEditor.ViewModels
 {
-    public class LoadFileViewModel : INotifyPropertyChanged
+    public class LoadFileViewModel : BaseViewModel
     {
-        public ILanguage Language { get { return Options.Language; } }
+        public ILanguage Language
+        {
+            get
+            {
+                return LanguageSettings.Language;
+            }
+        }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public LoadFileViewModel()
+        {
+            LanguageSettings.LanguageChangedHandler += LanguageChangedHandler;
+        }
+
+        private void LanguageChangedHandler(object sender, LanguageEventArgs languageEventArgs)
+        {
+            OnPropertyChanged("Language");
+        }
     }
 }

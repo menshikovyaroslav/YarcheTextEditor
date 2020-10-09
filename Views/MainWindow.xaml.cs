@@ -8,10 +8,5 @@ namespace YarcheTextEditor
         {
             InitializeComponent();
         }
-
-        public void AddMessage(string message)
-        {
-            WindowInformer.Items.Insert(0, message);
-        }
     }
 }

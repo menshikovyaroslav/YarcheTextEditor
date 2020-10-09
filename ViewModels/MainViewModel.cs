@@ -16,7 +16,7 @@ using YarcheTextEditor.Models;
 
 namespace YarcheTextEditor.ViewModels
 {
-    public class MainViewModel : INotifyPropertyChanged
+    public class MainViewModel : BaseViewModel
     {
         #region Commands
 
@@ -49,14 +49,20 @@ namespace YarcheTextEditor.ViewModels
 
         public void SetRussianCommand_Execute()
         {
-            _canBack = _canForward = false;
+            //   _canBack = _canForward = false;
 
-            Options.Language = new RussianLanguage();
+            Language = new RussianLanguage();
 
-            OnPropertyChanged("Language");
-            RegistryMethods.SetLanguage(Language);
+            //        AddMessageToUser($"Language changed to '{Language.LanguageCode}'");
+        }
 
-            AddMessageToUser($"Language changed to '{Language.LanguageCode}'");
+        public void SetEnglishCommand_Execute()
+        {
+            //    _canBack = _canForward = false;
+
+            Language = new EnglishLanguage();
+
+            //     AddMessageToUser($"Language changed to '{Language.LanguageCode}'");
         }
 
         public bool SetRussianCommand_CanExecute()
@@ -65,17 +71,7 @@ namespace YarcheTextEditor.ViewModels
             return true;
         }
 
-        public void SetEnglishCommand_Execute()
-        {
-            _canBack = _canForward = false;
 
-            Options.Language = new EnglishLanguage();
-
-            OnPropertyChanged("Language");
-            RegistryMethods.SetLanguage(Language);
-
-            AddMessageToUser($"Language changed to '{Language.LanguageCode}'");
-        }
 
         public bool SetEnglishCommand_CanExecute()
         {
@@ -469,13 +465,11 @@ namespace YarcheTextEditor.ViewModels
 
         #endregion
 
-        public ILanguage Language { get { return Options.Language; } }
+
         public ObservableCollection<StringElement> TextCollection { get; set; }
         public ObservableCollection<StringElement> BackCollection { get; set; }
         public ObservableCollection<StringElement> ForwardCollection { get; set; }
         public ObservableCollection<string> EventsCollection { get; set; }
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         public bool IsFileLoaded { get; set; }
         private string _pathToLoadedFile { get; set; }
@@ -483,25 +477,30 @@ namespace YarcheTextEditor.ViewModels
         private bool _canBack;
         private bool _canForward;
 
+        private BaseViewModel _selectedViewModel = new LoadFileViewModel();
+        public BaseViewModel SelectedViewModel { get { return _selectedViewModel; } set { _selectedViewModel = value; } }
 
-        private Page _loadFilePage;
-        private Page _workFilePage;
-
-
-
-        public Page CurrentPage { get; set; }
-
+        public ILanguage Language
+        {
+            get
+            {
+                return LanguageSettings.Language;
+            }
+            set
+            {
+                LanguageSettings.Language = value;
+                OnPropertyChanged("Language");
+            }
+        }
 
         public MainViewModel()
         {
+            Language = RegistryMethods.GetLanguage();
+
             TextCollection = new ObservableCollection<StringElement>();
             BackCollection = new ObservableCollection<StringElement>();
             ForwardCollection = new ObservableCollection<StringElement>();
             EventsCollection = new ObservableCollection<string>();
-
-            _loadFilePage = new Pages.LoadFilePage();
-            _workFilePage = new Pages.WorkFilePage();
-            CurrentPage = _loadFilePage;
 
             SetRussianCommand = new DelegateCommand(SetRussianCommand_Execute, SetRussianCommand_CanExecute);
             SetEnglishCommand = new DelegateCommand(SetEnglishCommand_Execute, SetEnglishCommand_CanExecute);
@@ -573,11 +572,6 @@ namespace YarcheTextEditor.ViewModels
             if (file == false) return;
 
             LoadFile(fileDialog.FileName);
-        }
-
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         private void ChangeTextCollection(ObservableCollection<StringElement> newCollection)

@@ -2,13 +2,14 @@
 using System.Windows.Controls;
 using YarcheTextEditor.Classes;
 using YarcheTextEditor.Models;
+using YarcheTextEditor.ViewModels;
 
-namespace YarcheTextEditor.Pages
+namespace YarcheTextEditor.Views
 {
     /// <summary>
     /// Логика взаимодействия для LoadFilePage.xaml
     /// </summary>
-    public partial class LoadFilePage : Page
+    public partial class LoadFilePage
     {
         public LoadFilePage()
         {

@@ -1,16 +1,14 @@
-﻿<Page x:Class="YarcheTextEditor.Pages.LoadFilePage"
+﻿<UserControl x:Class="YarcheTextEditor.Views.LoadFilePage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:YarcheTextEditor.Pages"
       xmlns:vm="clr-namespace:YarcheTextEditor.ViewModels"
-      mc:Ignorable="d" 
-      Title="LoadFilePage">
+      mc:Ignorable="d">
 
-    <Page.DataContext>
+    <UserControl.DataContext>
         <vm:LoadFileViewModel />
-    </Page.DataContext>
+    </UserControl.DataContext>
 
     <Grid Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="AliceBlue" DragDrop.Drop="Grid_Drop" AllowDrop="True">
         <Grid.InputBindings>
@@ -21,4 +19,4 @@
             <TextBlock Text="{Binding Language.DragFile}" Style="{StaticResource DragFileLabelStyle}"></TextBlock>
         </StackPanel>
     </Grid>
-</Page>
+</UserControl>

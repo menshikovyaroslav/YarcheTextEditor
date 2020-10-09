@@ -11,7 +11,7 @@
     <Window.DataContext>
         <vm:MainViewModel />
     </Window.DataContext>
-    
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -52,8 +52,8 @@
             <MenuItem Header="Forward" Style="{StaticResource NavigationMenuItemStyle}" Icon="{StaticResource Forward}" Command="{Binding NavigationForwardCommand}" Margin="0,1,0,1"></MenuItem>
         </Menu>
 
-        <Frame Grid.Row="1" Content="{Binding CurrentPage}" />
-
+        <ContentControl Grid.Row="1" Content="{Binding SelectedViewModel}"></ContentControl>
+        
         <StatusBar Grid.Row="2">
             <StatusBarItem HorizontalContentAlignment="Stretch">
                 <ListBox Style="{StaticResource WindowInformerStyle}" Name="WindowInformer" ItemsSource="{Binding EventsCollection}" />

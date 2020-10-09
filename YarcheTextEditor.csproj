@@ -63,11 +63,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\LoadFilePage.xaml">
+    <Page Include="Views\LoadFilePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\WorkFilePage.xaml">
+    <Page Include="Views\WorkFilePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -79,8 +79,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Classes\LanguageSettings.cs" />
     <Compile Include="Classes\Log.cs" />
-    <Compile Include="Classes\Options.cs" />
     <Compile Include="Classes\RegistryMethods.cs" />
     <Compile Include="Commands\DelegateWithParameterCommand.cs" />
     <Compile Include="Commands\DelegateCommand.cs" />
@@ -92,12 +92,14 @@
     <Compile Include="Models\LanguageMethods.cs" />
     <Compile Include="Models\RussianLanguage.cs" />
     <Compile Include="Models\StringElement.cs" />
-    <Compile Include="Pages\LoadFilePage.xaml.cs">
+    <Compile Include="Views\LoadFilePage.xaml.cs">
       <DependentUpon>LoadFilePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\WorkFilePage.xaml.cs">
+    <Compile Include="Views\WorkFilePage.xaml.cs">
       <DependentUpon>WorkFilePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\ViewModelLocator.cs" />
     <Compile Include="ViewModels\WorkFileViewModel.cs" />
     <Compile Include="ViewModels\LoadFileViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />

@@ -56,7 +56,21 @@
         
         <StatusBar Grid.Row="2">
             <StatusBarItem HorizontalContentAlignment="Stretch">
-                <ListBox Style="{StaticResource WindowInformerStyle}" Name="WindowInformer" ItemsSource="{Binding EventsCollection}" />
+                <ListBox Style="{StaticResource WindowInformerStyle}" Name="WindowInformer" ItemsSource="{Binding EventsCollection}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="140"></ColumnDefinition>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Column="0" Text="{Binding Path=Time}" HorizontalAlignment="Stretch" TextWrapping="Wrap"></TextBlock>
+                                <TextBlock Grid.Column="1" Text="{Binding Path=Text}" HorizontalAlignment="Stretch" TextWrapping="Wrap"></TextBlock>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </StatusBarItem>
         </StatusBar>
     </Grid>

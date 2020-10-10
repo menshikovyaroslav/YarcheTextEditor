@@ -52,8 +52,7 @@ namespace YarcheTextEditor.ViewModels
             //   _canBack = _canForward = false;
 
             Language = new RussianLanguage();
-
-            //        AddMessageToUser($"Language changed to '{Language.LanguageCode}'");
+            AddMessageToUser($"Language changed to '{Language.LanguageCode}'");
         }
 
         public void SetEnglishCommand_Execute()
@@ -61,8 +60,7 @@ namespace YarcheTextEditor.ViewModels
             //    _canBack = _canForward = false;
 
             Language = new EnglishLanguage();
-
-            //     AddMessageToUser($"Language changed to '{Language.LanguageCode}'");
+            AddMessageToUser($"Language changed to '{Language.LanguageCode}'");
         }
 
         public bool SetRussianCommand_CanExecute()
@@ -469,8 +467,8 @@ namespace YarcheTextEditor.ViewModels
         public ObservableCollection<StringElement> TextCollection { get; set; }
         public ObservableCollection<StringElement> BackCollection { get; set; }
         public ObservableCollection<StringElement> ForwardCollection { get; set; }
-        public ObservableCollection<string> EventsCollection { get; set; }
-
+        private ObservableCollection<LogEvent> _eventsCollection;
+        public ObservableCollection<LogEvent> EventsCollection { get { return new ObservableCollection<LogEvent>(_eventsCollection.OrderByDescending(t => t.Time)); } set { _eventsCollection = value; } }
         public bool IsFileLoaded { get; set; }
         private string _pathToLoadedFile { get; set; }
         private Encoding _fileEncoding { get; set; }
@@ -500,7 +498,7 @@ namespace YarcheTextEditor.ViewModels
             TextCollection = new ObservableCollection<StringElement>();
             BackCollection = new ObservableCollection<StringElement>();
             ForwardCollection = new ObservableCollection<StringElement>();
-            EventsCollection = new ObservableCollection<string>();
+            EventsCollection = new ObservableCollection<LogEvent>();
 
             SetRussianCommand = new DelegateCommand(SetRussianCommand_Execute, SetRussianCommand_CanExecute);
             SetEnglishCommand = new DelegateCommand(SetEnglishCommand_Execute, SetEnglishCommand_CanExecute);
@@ -522,7 +520,6 @@ namespace YarcheTextEditor.ViewModels
             DeleteEmptyLinesCommand = new DelegateCommand(DeleteEmptyLinesCommand_Execute, DeleteEmptyLinesCommand_CanExecute);
             RemoveWordCommand = new DelegateWithParameterCommand<string>(RemoveWordCommand_Execute, RemoveWordCommand_CanExecute);
             ReplaceWordCommand = new DelegateWithParameterCommand<object[]>(ReplaceWordCommand_Execute, ReplaceWordCommand_CanExecute);
-            // ReplaceWordCommand
 
             _fileEncoding = Encoding.UTF8;
         }
@@ -544,12 +541,12 @@ namespace YarcheTextEditor.ViewModels
 
                 _pathToLoadedFile = path;
 
-                //MainWindow.LoadFileControl.Visibility = Visibility.Collapsed;
-                //MainWindow.WorkFileControl.Visibility = Visibility.Visible;
+                SelectedViewModel = new WorkFileViewModel();
 
                 IsFileLoaded = true;
                 OnPropertyChanged("TextCollection");
                 OnPropertyChanged("IsFileLoaded");
+                OnPropertyChanged("SelectedViewModel");
 
                 AddMessageToUser($"Opened '{path}' file");
             }
@@ -561,7 +558,7 @@ namespace YarcheTextEditor.ViewModels
 
         private void AddMessageToUser(string message)
         {
-            EventsCollection.Add(message);
+            _eventsCollection.Add(new LogEvent(message));
             OnPropertyChanged("EventsCollection");
         }
 

@@ -81,6 +81,7 @@
     </Compile>
     <Compile Include="Classes\LanguageSettings.cs" />
     <Compile Include="Classes\Log.cs" />
+    <Compile Include="Classes\LogEvent.cs" />
     <Compile Include="Classes\RegistryMethods.cs" />
     <Compile Include="Commands\DelegateWithParameterCommand.cs" />
     <Compile Include="Commands\DelegateCommand.cs" />

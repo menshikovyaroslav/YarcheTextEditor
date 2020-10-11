@@ -87,162 +87,7 @@ namespace YarcheTextEditor.ViewModels
             return true;
         }
 
-        public void RemoveStringWithWordCommand_Execute(string word)
-        {
-            var newCollection = new ObservableCollection<StringElement>();
-            var index = 0;
-            foreach (var stringElement in TextCollection)
-            {
-                var line = stringElement.Text;
-                var isContains = line.Contains(word);
-                if (!isContains)
-                {
-                    index++;
-                    newCollection.Add(new StringElement() { Index = index, Text = line });
-                }
-            }
-
-            AddMessageToUser($"Used {Language.RemoveStringWithWordTool}, word='{word}'");
-            ChangeTextCollection(newCollection);
-        }
-
-        public bool RemoveStringWithWordCommand_CanExecute(string parameter)
-        {
-            return IsFileLoaded;
-        }
-
-        public void RemoveWordCommand_Execute(string word)
-        {
-            var newCollection = new ObservableCollection<StringElement>();
-            var index = 0;
-            foreach (var stringElement in TextCollection)
-            {
-                index++;
-                var line = stringElement.Text;
-                var isContains = line.Contains(word);
-                if (isContains)
-                {
-                    line = line.Replace(word, "");
-                }
-                newCollection.Add(new StringElement() { Index = index, Text = line });
-            }
-
-            AddMessageToUser($"Used {Language.RemoveWordTool}, word='{word}'");
-            ChangeTextCollection(newCollection);
-        }
-
-        public bool RemoveWordCommand_CanExecute(string parameter)
-        {
-            return IsFileLoaded;
-        }
-
-        public void ReplaceWordCommand_Execute(object[] parameters)
-        {
-            try
-            {
-                var word1 = parameters[0] as string;
-                var word2 = parameters[1] as string;
-
-                var newCollection = new ObservableCollection<StringElement>();
-                var index = 0;
-                foreach (var stringElement in TextCollection)
-                {
-                    index++;
-                    var line = stringElement.Text;
-                    var isContains = line.Contains(word1);
-                    if (isContains)
-                    {
-                        line = line.Replace(word1, word2);
-                    }
-                    newCollection.Add(new StringElement() { Index = index, Text = line });
-                }
-
-                AddMessageToUser($"Used {Language.ReplaceWordTool}, word='{word1} to word='{word2}'");
-                ChangeTextCollection(newCollection);
-            }
-            catch (Exception)
-            {
-            }
-
-        }
-
-        public bool ReplaceWordCommand_CanExecute(object[] parameters)
-        {
-            return true;
-        }
-
-        public void RemoveStringWithOutWordCommand_Execute(string word)
-        {
-            var newCollection = new ObservableCollection<StringElement>();
-            var index = 0;
-            foreach (var stringElement in TextCollection)
-            {
-                var line = stringElement.Text;
-                var isContains = line.Contains(word);
-                if (isContains)
-                {
-                    index++;
-                    newCollection.Add(new StringElement() { Index = index, Text = line });
-                }
-            }
-
-            AddMessageToUser($"Used {Language.RemoveStringWithOutWordTool}, word='{word}'");
-            ChangeTextCollection(newCollection);
-        }
-
-        public bool RemoveStringWithOutWordCommand_CanExecute(string parameter)
-        {
-            return IsFileLoaded;
-        }
-
-        public void StatisticsOnOccurrencesCommand_Execute()
-        {
-            var newCollection = new ObservableCollection<StringElement>();
-
-            // line -> number of occurrences 
-            var dict = new SortedList<string, int>();
-            foreach (var stringElement in TextCollection)
-            {
-                if (dict.ContainsKey(stringElement.Text)) dict[stringElement.Text]++;
-                else dict[stringElement.Text] = 1;
-            }
-
-            var index = 0;
-            foreach (KeyValuePair<string, int> pair in dict.OrderByDescending(pair => pair.Value))
-            {
-                index++;
-                newCollection.Add(new StringElement() { Index = index, Text = $"{pair.Key}={pair.Value}" });
-            }
-
-            AddMessageToUser($"Used {Language.StatisticsOnOccurrences}");
-            ChangeTextCollection(newCollection);
-        }
-
-        public bool StatisticsOnOccurrencesCommand_CanExecute()
-        {
-            return IsFileLoaded;
-        }
-
-        public void StatisticsOnOccurrencesWithWordCommand_Execute(string word)
-        {
-            var newCollection = new ObservableCollection<StringElement>();
-
-            var count = 0;
-            foreach (var stringElement in TextCollection)
-            {
-                if (stringElement.Text.Contains(word)) count++;
-            }
-
-            newCollection.Add(new StringElement() { Index = 1, Text = $"{word}={count}" });
-
-            AddMessageToUser($"Used {Language.StatisticsOnOccurrencesWithWord}, word='{word}'");
-            ChangeTextCollection(newCollection);
-        }
-
-        public bool StatisticsOnOccurrencesWithWordCommand_CanExecute(string word)
-        {
-            return IsFileLoaded;
-        }
+       
 
         public void EncodingMenuCommand_Execute()
         {
@@ -253,27 +98,7 @@ namespace YarcheTextEditor.ViewModels
             return IsFileLoaded;
         }
 
-        public void DeleteEmptyLinesCommand_Execute()
-        {
-            var newCollection = new ObservableCollection<StringElement>();
-
-            var index = 0;
-            foreach (var item in TextCollection)
-            {
-                if (item.Text == "") continue;
-
-                index++;
-                newCollection.Add(new StringElement() { Index = index, Text = item.Text });
-            }
-
-            AddMessageToUser($"Used {Language.DeleteEmptyLines}");
-            ChangeTextCollection(newCollection);
-        }
-
-        public bool DeleteEmptyLinesCommand_CanExecute()
-        {
-            return IsFileLoaded;
-        }
+      
 
         public void FileOpenCommand_Execute()
         {
@@ -285,70 +110,7 @@ namespace YarcheTextEditor.ViewModels
             return true;
         }
 
-        public void FileSaveCommand_Execute()
-        {
-            var lines = new List<string>();
-            foreach (var item in TextCollection)
-            {
-                lines.Add(item.Text);
-            }
-            File.WriteAllLines(_pathToLoadedFile, lines, _fileEncoding);
-
-            AddMessageToUser($"Saved '{_pathToLoadedFile}' file");
-        }
-
-        public bool FileSaveCommand_CanExecute()
-        {
-            return IsFileLoaded;
-        }
-
-        public void NavigationBackCommand_Execute()
-        {
-            AddMessageToUser($"Navigation back");
-            _canBack = false;
-            _canForward = true;
-            ForwardCollection.Clear();
-            foreach (var item in TextCollection)
-            {
-                ForwardCollection.Add(item);
-            }
-            TextCollection.Clear();
-            foreach (var item in BackCollection)
-            {
-                TextCollection.Add(item);
-            }
-            BackCollection.Clear();
-            OnPropertyChanged("TextCollection");
-        }
-
-        public bool NavigationBackCommand_CanExecute()
-        {
-            return IsFileLoaded && _canBack;
-        }
-
-        public void NavigationForwardCommand_Execute()
-        {
-            AddMessageToUser($"Navigation forward");
-            _canBack = true;
-            _canForward = false;
-            BackCollection.Clear();
-            foreach (var item in TextCollection)
-            {
-                BackCollection.Add(item);
-            }
-            TextCollection.Clear();
-            foreach (var item in ForwardCollection)
-            {
-                TextCollection.Add(item);
-            }
-            ForwardCollection.Clear();
-            OnPropertyChanged("TextCollection");
-        }
-
-        public bool NavigationForwardCommand_CanExecute()
-        {
-            return IsFileLoaded && _canForward;
-        }
+     
 
         public void SetEncodingWin1251Command_Execute()
         {
@@ -401,7 +163,268 @@ namespace YarcheTextEditor.ViewModels
             return IsFileLoaded;
         }
 
-        // SetEncodingWin1251Command
+        public void RemoveStringWithWordCommand_Execute(string word)
+        {
+            var newCollection = new ObservableCollection<StringElement>();
+            var index = 0;
+            foreach (var stringElement in Collections.TextCollection)
+            {
+                var line = stringElement.Text;
+                var isContains = line.Contains(word);
+                if (!isContains)
+                {
+                    index++;
+                    newCollection.Add(new StringElement() { Index = index, Text = line });
+                }
+            }
+
+            AddMessageToUser($"Used {Language.RemoveStringWithWordTool}, word='{word}'");
+            ChangeTextCollection(newCollection);
+        }
+
+        public bool RemoveStringWithWordCommand_CanExecute(string parameter)
+        {
+            return IsFileLoaded;
+        }
+
+        public void RemoveWordCommand_Execute(string word)
+        {
+            var newCollection = new ObservableCollection<StringElement>();
+            var index = 0;
+            foreach (var stringElement in Collections.TextCollection)
+            {
+                index++;
+                var line = stringElement.Text;
+                var isContains = line.Contains(word);
+                if (isContains)
+                {
+                    line = line.Replace(word, "");
+                }
+                newCollection.Add(new StringElement() { Index = index, Text = line });
+            }
+
+            AddMessageToUser($"Used {Language.RemoveWordTool}, word='{word}'");
+            ChangeTextCollection(newCollection);
+        }
+
+        public bool RemoveWordCommand_CanExecute(string parameter)
+        {
+            return IsFileLoaded;
+        }
+
+        public void ReplaceWordCommand_Execute(object[] parameters)
+        {
+            try
+            {
+                var word1 = parameters[0] as string;
+                var word2 = parameters[1] as string;
+
+                var newCollection = new ObservableCollection<StringElement>();
+                var index = 0;
+                foreach (var stringElement in Collections.TextCollection)
+                {
+                    index++;
+                    var line = stringElement.Text;
+                    var isContains = line.Contains(word1);
+                    if (isContains)
+                    {
+                        line = line.Replace(word1, word2);
+                    }
+                    newCollection.Add(new StringElement() { Index = index, Text = line });
+                }
+
+                AddMessageToUser($"Used {Language.ReplaceWordTool}, word='{word1} to word='{word2}'");
+                ChangeTextCollection(newCollection);
+            }
+            catch (Exception)
+            {
+            }
+
+        }
+
+        public bool ReplaceWordCommand_CanExecute(object[] parameters)
+        {
+            return true;
+        }
+
+        public void RemoveStringWithOutWordCommand_Execute(string word)
+        {
+            var newCollection = new ObservableCollection<StringElement>();
+            var index = 0;
+            foreach (var stringElement in Collections.TextCollection)
+            {
+                var line = stringElement.Text;
+                var isContains = line.Contains(word);
+                if (isContains)
+                {
+                    index++;
+                    newCollection.Add(new StringElement() { Index = index, Text = line });
+                }
+            }
+
+            AddMessageToUser($"Used {Language.RemoveStringWithOutWordTool}, word='{word}'");
+            ChangeTextCollection(newCollection);
+        }
+
+        public bool RemoveStringWithOutWordCommand_CanExecute(string parameter)
+        {
+            return IsFileLoaded;
+        }
+
+        public void StatisticsOnOccurrencesCommand_Execute()
+        {
+            var newCollection = new ObservableCollection<StringElement>();
+
+            // line -> number of occurrences 
+            var dict = new SortedList<string, int>();
+            foreach (var stringElement in Collections.TextCollection)
+            {
+                if (dict.ContainsKey(stringElement.Text)) dict[stringElement.Text]++;
+                else dict[stringElement.Text] = 1;
+            }
+
+            var index = 0;
+            foreach (KeyValuePair<string, int> pair in dict.OrderByDescending(pair => pair.Value))
+            {
+                index++;
+                newCollection.Add(new StringElement() { Index = index, Text = $"{pair.Key}={pair.Value}" });
+            }
+
+            AddMessageToUser($"Used {Language.StatisticsOnOccurrences}");
+            ChangeTextCollection(newCollection);
+        }
+
+        public bool StatisticsOnOccurrencesCommand_CanExecute()
+        {
+            return IsFileLoaded;
+        }
+
+        public void StatisticsOnOccurrencesWithWordCommand_Execute(string word)
+        {
+            var newCollection = new ObservableCollection<StringElement>();
+
+            var count = 0;
+            foreach (var stringElement in Collections.TextCollection)
+            {
+                if (stringElement.Text.Contains(word)) count++;
+            }
+
+            newCollection.Add(new StringElement() { Index = 1, Text = $"{word}={count}" });
+
+            AddMessageToUser($"Used {Language.StatisticsOnOccurrencesWithWord}, word='{word}'");
+            ChangeTextCollection(newCollection);
+        }
+
+        public bool StatisticsOnOccurrencesWithWordCommand_CanExecute(string word)
+        {
+            return IsFileLoaded;
+        }
+
+        public void DeleteEmptyLinesCommand_Execute()
+        {
+            var newCollection = new ObservableCollection<StringElement>();
+
+            var index = 0;
+            foreach (var item in Collections.TextCollection)
+            {
+                if (item.Text == "") continue;
+
+                index++;
+                newCollection.Add(new StringElement() { Index = index, Text = item.Text });
+            }
+
+            AddMessageToUser($"Used {Language.DeleteEmptyLines}");
+            ChangeTextCollection(newCollection);
+        }
+
+        public bool DeleteEmptyLinesCommand_CanExecute()
+        {
+            return IsFileLoaded;
+        }
+
+        public void FileSaveCommand_Execute()
+        {
+            var lines = new List<string>();
+            foreach (var item in Collections.TextCollection)
+            {
+                lines.Add(item.Text);
+            }
+            File.WriteAllLines(_pathToLoadedFile, lines, _fileEncoding);
+
+            AddMessageToUser($"Saved '{_pathToLoadedFile}' file");
+        }
+
+        public bool FileSaveCommand_CanExecute()
+        {
+            return IsFileLoaded;
+        }
+
+        public void NavigationBackCommand_Execute()
+        {
+            AddMessageToUser($"Navigation back");
+            _canBack = false;
+            _canForward = true;
+            ForwardCollection.Clear();
+            foreach (var item in Collections.TextCollection)
+            {
+                ForwardCollection.Add(item);
+            }
+            Collections.TextCollection.Clear();
+            foreach (var item in BackCollection)
+            {
+                Collections.TextCollection.Add(item);
+            }
+            BackCollection.Clear();
+            OnPropertyChanged("TextCollection");
+        }
+
+        public bool NavigationBackCommand_CanExecute()
+        {
+            return IsFileLoaded && _canBack;
+        }
+
+        public void NavigationForwardCommand_Execute()
+        {
+            AddMessageToUser($"Navigation forward");
+            _canBack = true;
+            _canForward = false;
+            BackCollection.Clear();
+            foreach (var item in Collections.TextCollection)
+            {
+                BackCollection.Add(item);
+            }
+            Collections.TextCollection.Clear();
+            foreach (var item in ForwardCollection)
+            {
+                Collections.TextCollection.Add(item);
+            }
+            ForwardCollection.Clear();
+            OnPropertyChanged("TextCollection");
+        }
+
+        public bool NavigationForwardCommand_CanExecute()
+        {
+            return IsFileLoaded && _canForward;
+        }
+
+        public void FileCloseCommand_Execute()
+        {
+            Collections.TextCollection.Clear();
+
+            //   MainWindow.LoadFileControl.Visibility = System.Windows.Visibility.Visible;
+            //   MainWindow.WorkFileControl.Visibility = System.Windows.Visibility.Collapsed;
+
+            IsFileLoaded = false;
+            OnPropertyChanged("TextCollection");
+            OnPropertyChanged("IsFileLoaded");
+
+            AddMessageToUser($"Closed '{_pathToLoadedFile}' file");
+        }
+
+        public bool FileCloseCommand_CanExecute()
+        {
+            return IsFileLoaded;
+        }
 
         public void FileSaveAsCommand_Execute()
         {
@@ -418,7 +441,7 @@ namespace YarcheTextEditor.ViewModels
                     chosenFile = saveDialog.FileName;
 
                     var lines = new List<string>();
-                    foreach (var item in TextCollection)
+                    foreach (var item in Collections.TextCollection)
                     {
                         lines.Add(item.Text);
                     }
@@ -440,31 +463,15 @@ namespace YarcheTextEditor.ViewModels
             return IsFileLoaded;
         }
 
-        public void FileCloseCommand_Execute()
-        {
-            TextCollection.Clear();
 
-            //   MainWindow.LoadFileControl.Visibility = System.Windows.Visibility.Visible;
-            //   MainWindow.WorkFileControl.Visibility = System.Windows.Visibility.Collapsed;
 
-            IsFileLoaded = false;
-            OnPropertyChanged("TextCollection");
-            OnPropertyChanged("IsFileLoaded");
-
-            AddMessageToUser($"Closed '{_pathToLoadedFile}' file");
-        }
-
-        public bool FileCloseCommand_CanExecute()
-        {
-            return IsFileLoaded;
-        }
 
         #endregion
 
         #endregion
 
 
-        public ObservableCollection<StringElement> TextCollection { get; set; }
+
         public ObservableCollection<StringElement> BackCollection { get; set; }
         public ObservableCollection<StringElement> ForwardCollection { get; set; }
         private ObservableCollection<LogEvent> _eventsCollection;
@@ -494,8 +501,8 @@ namespace YarcheTextEditor.ViewModels
         public MainViewModel()
         {
             Language = RegistryMethods.GetLanguage();
+            Collections.TextCollectionChangedHandler += TextCollectionChangedHandler;
 
-            TextCollection = new ObservableCollection<StringElement>();
             BackCollection = new ObservableCollection<StringElement>();
             ForwardCollection = new ObservableCollection<StringElement>();
             EventsCollection = new ObservableCollection<LogEvent>();
@@ -524,10 +531,15 @@ namespace YarcheTextEditor.ViewModels
             _fileEncoding = Encoding.UTF8;
         }
 
+        private void TextCollectionChangedHandler(object sender, EventArgs EventArgs)
+        {
+            OnPropertyChanged("TextCollection");
+        }
+
         public void LoadFile(string path)
         {
             _canBack = _canForward = false;
-            TextCollection.Clear();
+            Collections.TextCollection.Clear();
 
             try
             {
@@ -536,7 +548,7 @@ namespace YarcheTextEditor.ViewModels
                 foreach (var line in lines)
                 {
                     index++;
-                    TextCollection.Add(new StringElement() { Index = index, Text = line });
+                    Collections.TextCollection.Add(new StringElement() { Index = index, Text = line });
                 }
 
                 _pathToLoadedFile = path;
@@ -547,6 +559,8 @@ namespace YarcheTextEditor.ViewModels
                 OnPropertyChanged("TextCollection");
                 OnPropertyChanged("IsFileLoaded");
                 OnPropertyChanged("SelectedViewModel");
+
+                Collections.TextCollectionChanged();
 
                 AddMessageToUser($"Opened '{path}' file");
             }
@@ -576,13 +590,13 @@ namespace YarcheTextEditor.ViewModels
             _canBack = true;
             _canForward = false;
             BackCollection.Clear();
-            foreach (var item in TextCollection)
+            foreach (var item in Collections.TextCollection)
             {
                 BackCollection.Add(item);
             }
-            TextCollection.Clear();
-            TextCollection = newCollection;
-            OnPropertyChanged("TextCollection");
+            Collections.TextCollection.Clear();
+            Collections.TextCollection = newCollection;
+            Collections.TextCollectionChanged();
         }
     }
 }

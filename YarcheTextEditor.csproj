@@ -83,6 +83,7 @@
     <Compile Include="Classes\Log.cs" />
     <Compile Include="Classes\LogEvent.cs" />
     <Compile Include="Classes\RegistryMethods.cs" />
+    <Compile Include="Classes\Collections.cs" />
     <Compile Include="Commands\DelegateWithParameterCommand.cs" />
     <Compile Include="Commands\DelegateCommand.cs" />
     <Compile Include="Converters\OddConverter.cs" />

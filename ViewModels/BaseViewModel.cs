@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,11 @@ namespace YarcheTextEditor.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
+        public BaseViewModel()
+        {
+
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged(string propertyName)

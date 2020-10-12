@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
 using YarcheTextEditor.Models;
 
 namespace YarcheTextEditor.Classes
@@ -17,6 +18,8 @@ namespace YarcheTextEditor.Classes
         {
             TextCollection = new ObservableCollection<StringElement>();
         }
+
+
 
         public static void TextCollectionChanged()
         {

@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
 using YarcheTextEditor.Classes;
 using YarcheTextEditor.Models;
 
@@ -16,6 +17,7 @@ namespace YarcheTextEditor.ViewModels
 
         public WorkFileViewModel()
         {
+
             Collections.TextCollectionChangedHandler += TextCollectionChangedHandler;
         }
 

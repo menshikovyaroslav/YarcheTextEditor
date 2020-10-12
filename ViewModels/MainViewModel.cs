@@ -165,18 +165,8 @@ namespace YarcheTextEditor.ViewModels
 
         public void RemoveStringWithWordCommand_Execute(string word)
         {
-            var newCollection = new ObservableCollection<StringElement>();
-            var index = 0;
-            foreach (var stringElement in Collections.TextCollection)
-            {
-                var line = stringElement.Text;
-                var isContains = line.Contains(word);
-                if (!isContains)
-                {
-                    index++;
-                    newCollection.Add(new StringElement() { Index = index, Text = line });
-                }
-            }
+            var enumerableCollection = from i in Collections.TextCollection where !i.Text.Contains(word) select i;
+            var newCollection = new ObservableCollection<StringElement>(enumerableCollection);
 
             AddMessageToUser($"Used {Language.RemoveStringWithWordTool}, word='{word}'");
             ChangeTextCollection(newCollection);
@@ -595,7 +585,12 @@ namespace YarcheTextEditor.ViewModels
                 BackCollection.Add(item);
             }
             Collections.TextCollection.Clear();
-            Collections.TextCollection = newCollection;
+
+            for (int i = 0; i < newCollection.Count; i++)
+            {
+                Collections.TextCollection.Add(new StringElement() { Index = i + 1, Text = newCollection[i].Text });
+            }
+
             Collections.TextCollectionChanged();
         }
     }

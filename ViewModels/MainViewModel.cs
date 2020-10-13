@@ -49,16 +49,12 @@ namespace YarcheTextEditor.ViewModels
 
         public void SetRussianCommand_Execute()
         {
-            //   _canBack = _canForward = false;
-
             Language = new RussianLanguage();
             AddMessageToUser($"Language changed to '{Language.LanguageCode}'");
         }
 
         public void SetEnglishCommand_Execute()
         {
-            //    _canBack = _canForward = false;
-
             Language = new EnglishLanguage();
             AddMessageToUser($"Language changed to '{Language.LanguageCode}'");
         }
@@ -68,8 +64,6 @@ namespace YarcheTextEditor.ViewModels
             if (Language.GetType() == typeof(RussianLanguage)) return false;
             return true;
         }
-
-
 
         public bool SetEnglishCommand_CanExecute()
         {
@@ -87,8 +81,6 @@ namespace YarcheTextEditor.ViewModels
             return true;
         }
 
-       
-
         public void EncodingMenuCommand_Execute()
         {
         }
@@ -97,8 +89,6 @@ namespace YarcheTextEditor.ViewModels
         {
             return IsFileLoaded;
         }
-
-      
 
         public void FileOpenCommand_Execute()
         {
@@ -109,8 +99,6 @@ namespace YarcheTextEditor.ViewModels
         {
             return true;
         }
-
-     
 
         public void SetEncodingWin1251Command_Execute()
         {
@@ -239,18 +227,8 @@ namespace YarcheTextEditor.ViewModels
 
         public void RemoveStringWithOutWordCommand_Execute(string word)
         {
-            var newCollection = new ObservableCollection<StringElement>();
-            var index = 0;
-            foreach (var stringElement in Collections.TextCollection)
-            {
-                var line = stringElement.Text;
-                var isContains = line.Contains(word);
-                if (isContains)
-                {
-                    index++;
-                    newCollection.Add(new StringElement() { Index = index, Text = line });
-                }
-            }
+            var enumerableCollection = from i in Collections.TextCollection where i.Text.Contains(word) select i;
+            var newCollection = new ObservableCollection<StringElement>(enumerableCollection);
 
             AddMessageToUser($"Used {Language.RemoveStringWithOutWordTool}, word='{word}'");
             ChangeTextCollection(newCollection);
@@ -292,13 +270,7 @@ namespace YarcheTextEditor.ViewModels
         public void StatisticsOnOccurrencesWithWordCommand_Execute(string word)
         {
             var newCollection = new ObservableCollection<StringElement>();
-
-            var count = 0;
-            foreach (var stringElement in Collections.TextCollection)
-            {
-                if (stringElement.Text.Contains(word)) count++;
-            }
-
+            var count = (from i in Collections.TextCollection where i.Text.Contains(word) select i).Count();
             newCollection.Add(new StringElement() { Index = 1, Text = $"{word}={count}" });
 
             AddMessageToUser($"Used {Language.StatisticsOnOccurrencesWithWord}, word='{word}'");
@@ -312,16 +284,8 @@ namespace YarcheTextEditor.ViewModels
 
         public void DeleteEmptyLinesCommand_Execute()
         {
-            var newCollection = new ObservableCollection<StringElement>();
-
-            var index = 0;
-            foreach (var item in Collections.TextCollection)
-            {
-                if (item.Text == "") continue;
-
-                index++;
-                newCollection.Add(new StringElement() { Index = index, Text = item.Text });
-            }
+            var enumerableCollection = from i in Collections.TextCollection where !string.IsNullOrWhiteSpace(i.Text) select i;
+            var newCollection = new ObservableCollection<StringElement>(enumerableCollection);
 
             AddMessageToUser($"Used {Language.DeleteEmptyLines}");
             ChangeTextCollection(newCollection);
@@ -439,6 +403,8 @@ namespace YarcheTextEditor.ViewModels
                     File.WriteAllLines(chosenFile, lines, _fileEncoding);
 
                     AddMessageToUser($"Saved as '{chosenFile}' file");
+
+                    _pathToLoadedFile = chosenFile;
                 }
             }
             catch (Exception ex)
@@ -453,14 +419,9 @@ namespace YarcheTextEditor.ViewModels
             return IsFileLoaded;
         }
 
-
-
-
         #endregion
 
         #endregion
-
-
 
         public ObservableCollection<StringElement> BackCollection { get; set; }
         public ObservableCollection<StringElement> ForwardCollection { get; set; }

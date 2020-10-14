@@ -13,10 +13,14 @@ namespace YarcheTextEditor.Classes
     {
         public static EventHandler<EventArgs> TextCollectionChangedHandler;
         public static ObservableCollection<StringElement> TextCollection { get; set; }
+        public static ObservableCollection<StringElement> BackCollection { get; set; }
+        public static ObservableCollection<StringElement> ForwardCollection { get; set; }
 
         static Collections()
         {
             TextCollection = new ObservableCollection<StringElement>();
+            BackCollection = new ObservableCollection<StringElement>();
+            ForwardCollection = new ObservableCollection<StringElement>();
         }
 
 

@@ -18,12 +18,12 @@ namespace YarcheTextEditor.ViewModels
         public WorkFileViewModel()
         {
 
-            Collections.TextCollectionChangedHandler += TextCollectionChangedHandler;
+       //     Collections.TextCollectionChangedHandler += TextCollectionChangedHandler;
         }
 
-        private void TextCollectionChangedHandler(object sender, EventArgs EventArgs)
-        {
-            OnPropertyChanged("TextCollection");
-        }
+    //    private void TextCollectionChangedHandler(object sender, EventArgs EventArgs)
+    //    {
+      //      OnPropertyChanged("TextCollection");
+     //   }
     }
 }

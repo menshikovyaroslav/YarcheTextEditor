@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace YarcheTextEditor.Commands
 {
-    public class DelegateWithParameterCommand<T> : ICommand
+    public class RelayCommand<T> : ICommand
     {
         public event EventHandler CanExecuteChanged
         {
@@ -12,7 +12,7 @@ namespace YarcheTextEditor.Commands
         }
         private Action<T> methodToExecute;
         private Predicate<T> canExecuteEvaluator;
-        public DelegateWithParameterCommand(Action<T> methodToExecute, Predicate<T> canExecuteEvaluator)
+        public RelayCommand(Action<T> methodToExecute, Predicate<T> canExecuteEvaluator)
         {
             this.methodToExecute = methodToExecute;
             this.canExecuteEvaluator = canExecuteEvaluator;

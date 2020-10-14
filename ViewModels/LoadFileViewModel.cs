@@ -26,7 +26,7 @@ namespace YarcheTextEditor.ViewModels
 
         private void LanguageChangedHandler(object sender, LanguageEventArgs languageEventArgs)
         {
-         //   OnPropertyChanged("Language");
+            OnPropertyChanged("Language");
         }
     }
 }

@@ -318,17 +318,17 @@ namespace YarcheTextEditor.ViewModels
             AddMessageToUser($"Navigation back");
             _canBack = false;
             _canForward = true;
-            ForwardCollection.Clear();
+            Collections.ForwardCollection.Clear();
             foreach (var item in Collections.TextCollection)
             {
-                ForwardCollection.Add(item);
+                Collections.ForwardCollection.Add(item);
             }
             Collections.TextCollection.Clear();
-            foreach (var item in BackCollection)
+            foreach (var item in Collections.BackCollection)
             {
                 Collections.TextCollection.Add(item);
             }
-            BackCollection.Clear();
+            Collections.BackCollection.Clear();
             OnPropertyChanged("TextCollection");
         }
 
@@ -342,17 +342,17 @@ namespace YarcheTextEditor.ViewModels
             AddMessageToUser($"Navigation forward");
             _canBack = true;
             _canForward = false;
-            BackCollection.Clear();
+            Collections.BackCollection.Clear();
             foreach (var item in Collections.TextCollection)
             {
-                BackCollection.Add(item);
+                Collections.BackCollection.Add(item);
             }
             Collections.TextCollection.Clear();
-            foreach (var item in ForwardCollection)
+            foreach (var item in Collections.ForwardCollection)
             {
                 Collections.TextCollection.Add(item);
             }
-            ForwardCollection.Clear();
+            Collections.ForwardCollection.Clear();
             OnPropertyChanged("TextCollection");
         }
 
@@ -423,8 +423,7 @@ namespace YarcheTextEditor.ViewModels
 
         #endregion
 
-        public ObservableCollection<StringElement> BackCollection { get; set; }
-        public ObservableCollection<StringElement> ForwardCollection { get; set; }
+
         private ObservableCollection<LogEvent> _eventsCollection;
         public ObservableCollection<LogEvent> EventsCollection { get { return new ObservableCollection<LogEvent>(_eventsCollection.OrderByDescending(t => t.Time)); } set { _eventsCollection = value; } }
         public bool IsFileLoaded { get; set; }
@@ -454,15 +453,14 @@ namespace YarcheTextEditor.ViewModels
             Language = RegistryMethods.GetLanguage();
             Collections.TextCollectionChangedHandler += TextCollectionChangedHandler;
 
-            BackCollection = new ObservableCollection<StringElement>();
-            ForwardCollection = new ObservableCollection<StringElement>();
+
             EventsCollection = new ObservableCollection<LogEvent>();
 
             SetRussianCommand = new DelegateCommand(SetRussianCommand_Execute, SetRussianCommand_CanExecute);
             SetEnglishCommand = new DelegateCommand(SetEnglishCommand_Execute, SetEnglishCommand_CanExecute);
             CloseProgramCommand = new DelegateCommand(CloseProgramCommand_Execute, CloseProgramCommand_CanExecute);
-            RemoveStringWithWordCommand = new DelegateWithParameterCommand<string>(RemoveStringWithWordCommand_Execute, RemoveStringWithWordCommand_CanExecute);
-            RemoveStringWithOutWordCommand = new DelegateWithParameterCommand<string>(RemoveStringWithOutWordCommand_Execute, RemoveStringWithOutWordCommand_CanExecute);
+            RemoveStringWithWordCommand = new RelayCommand<string>(RemoveStringWithWordCommand_Execute, RemoveStringWithWordCommand_CanExecute);
+            RemoveStringWithOutWordCommand = new RelayCommand<string>(RemoveStringWithOutWordCommand_Execute, RemoveStringWithOutWordCommand_CanExecute);
             StatisticsOnOccurrencesCommand = new DelegateCommand(StatisticsOnOccurrencesCommand_Execute, StatisticsOnOccurrencesCommand_CanExecute);
             FileOpenCommand = new DelegateCommand(FileOpenCommand_Execute, FileOpenCommand_CanExecute);
             FileCloseCommand = new DelegateCommand(FileCloseCommand_Execute, FileCloseCommand_CanExecute);
@@ -471,13 +469,13 @@ namespace YarcheTextEditor.ViewModels
             EncodingMenuCommand = new DelegateCommand(EncodingMenuCommand_Execute, EncodingMenuCommand_CanExecute);
             SetEncodingWin1251Command = new DelegateCommand(SetEncodingWin1251Command_Execute, SetEncodingWin1251Command_CanExecute);
             SetEncodingUtf8Command = new DelegateCommand(SetEncodingUtf8Command_Execute, SetEncodingUtf8Command_CanExecute);
-            SetYourEncodingCommand = new DelegateWithParameterCommand<string>(SetYourEncodingCommand_Execute, SetYourEncodingCommand_CanExecute);
-            StatisticsOnOccurrencesWithWordCommand = new DelegateWithParameterCommand<string>(StatisticsOnOccurrencesWithWordCommand_Execute, StatisticsOnOccurrencesWithWordCommand_CanExecute);
+            SetYourEncodingCommand = new RelayCommand<string>(SetYourEncodingCommand_Execute, SetYourEncodingCommand_CanExecute);
+            StatisticsOnOccurrencesWithWordCommand = new RelayCommand<string>(StatisticsOnOccurrencesWithWordCommand_Execute, StatisticsOnOccurrencesWithWordCommand_CanExecute);
             NavigationBackCommand = new DelegateCommand(NavigationBackCommand_Execute, NavigationBackCommand_CanExecute);
             NavigationForwardCommand = new DelegateCommand(NavigationForwardCommand_Execute, NavigationForwardCommand_CanExecute);
             DeleteEmptyLinesCommand = new DelegateCommand(DeleteEmptyLinesCommand_Execute, DeleteEmptyLinesCommand_CanExecute);
-            RemoveWordCommand = new DelegateWithParameterCommand<string>(RemoveWordCommand_Execute, RemoveWordCommand_CanExecute);
-            ReplaceWordCommand = new DelegateWithParameterCommand<object[]>(ReplaceWordCommand_Execute, ReplaceWordCommand_CanExecute);
+            RemoveWordCommand = new RelayCommand<string>(RemoveWordCommand_Execute, RemoveWordCommand_CanExecute);
+            ReplaceWordCommand = new RelayCommand<object[]>(ReplaceWordCommand_Execute, ReplaceWordCommand_CanExecute);
 
             _fileEncoding = Encoding.UTF8;
         }
@@ -540,10 +538,10 @@ namespace YarcheTextEditor.ViewModels
         {
             _canBack = true;
             _canForward = false;
-            BackCollection.Clear();
+            Collections.BackCollection.Clear();
             foreach (var item in Collections.TextCollection)
             {
-                BackCollection.Add(item);
+                Collections.BackCollection.Add(item);
             }
             Collections.TextCollection.Clear();
 
